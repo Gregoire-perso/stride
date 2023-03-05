@@ -4,10 +4,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!-- Connexion strings -->
-    <string name="connexion.sign_in">Sign In</string>
-    <string name="connexion.register">Register</string>
-    <string name="connexion.email">E-mail</string>
-    <string name="connexion.password">Password</string>
-    <string name="connexion.confirm_password">Confirm password</string>
+    <!-- Connection strings -->
+    <string name="connection.sign_in">Sign In</string>
+    <string name="connection.register">Register</string>
+    <string name="connection.email">E-mail</string>
+    <string name="connection.password">Password</string>
+    <string name="connection.confirm_password">Confirm password</string>
 </resources>
