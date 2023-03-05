@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Stride</string>
+    <string name="welcome_message">Welcome to Stride!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Connexion strings -->
+    <string name="sign_in">Sign In</string>
+    <string name="register">Register</string>
 </resources>
