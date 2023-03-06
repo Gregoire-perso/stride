@@ -1,3 +1,3 @@
 # Stride
 
-An simple training app made by students at UL.
+An simple training app made by students at UL..
