@@ -103,7 +103,7 @@ public class activity_race_prog extends AppCompatActivity {
                 showDate();
             }
         });
-    }
+    }//cc
 
     private void datePickerChange(DatePicker datePicker, int year, int month, int dayOfMonth) {
         Log.d("Date", "Year=" + year + " Month=" + (month + 1) + " day=" + dayOfMonth);
