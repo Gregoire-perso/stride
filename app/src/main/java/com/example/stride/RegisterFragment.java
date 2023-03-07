@@ -165,6 +165,10 @@ public class RegisterFragment extends Fragment {
                     passwordText.setText("");
                     confirmPasswordText.setText("");
                 }
+                else if (computePassword(password) == PasswordStrength.NONE) {
+                    registrationError.setText(R.string.connection_too_short);
+                    registrationError.setVisibility(View.VISIBLE);
+                }
                 else {
                     mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
