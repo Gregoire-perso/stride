@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -93,27 +95,42 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String email = ((EditText) view.findViewById(R.id.registerEmail)).getText().toString();
-                String password = ((EditText) view.findViewById(R.id.registerPassword)).getText().toString();
+                EditText passwordText = view.findViewById(R.id.registerPassword);
+                String password = passwordText.getText().toString();
+                EditText confirmPasswordText = view.findViewById(R.id.registerConfirmPassword);
+                String confirmPassword = confirmPasswordText.getText().toString();
+                TextView registrationError = view.findViewById(R.id.registerRegistrationError);
+                registrationError.setVisibility(View.INVISIBLE);
 
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "createUserWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    //updateUI(user);
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                    //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-                                    //        Toast.LENGTH_SHORT).show();
-                                    //updateUI(null);
+                if (!password.equals(confirmPassword)) {
+                    registrationError.setText(R.string.connection_not_same);
+                    registrationError.setVisibility(View.VISIBLE);
+                    passwordText.setText("");
+                    confirmPasswordText.setText("");
+                }
+                else {
+                    mAuth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d(TAG, "createUserWithEmail:success");
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        // TODO
+                                        //updateUI(user);
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                        registrationError.setText(task.getException().getMessage());
+                                        registrationError.setVisibility(View.VISIBLE);
+                                        //updateUI(null);
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
             }
         });
     }
+
 }

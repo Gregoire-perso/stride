@@ -10,4 +10,5 @@
     <string name="connection.email">E-mail</string>
     <string name="connection.password">Password</string>
     <string name="connection.confirm_password">Confirm password</string>
+    <string name="connection.not_same">Password and confirmation are different</string>
 </resources>
