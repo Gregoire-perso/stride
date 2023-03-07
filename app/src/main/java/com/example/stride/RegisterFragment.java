@@ -3,6 +3,7 @@ package com.example.stride;
 import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,7 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +38,14 @@ import com.google.firebase.auth.FirebaseUser;
 public class RegisterFragment extends Fragment {
 
     private FirebaseAuth mAuth;
+
+    private enum PasswordStrength {
+        NONE,
+        WEAK,
+        REASONABLE,
+        STRONG,
+        VERY_STRONG
+    }
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -77,12 +89,57 @@ public class RegisterFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
+    private PasswordStrength computePassword(@NonNull String password) {
+        if (password.length() < 8)
+            return PasswordStrength.NONE;
+
+        int upper = 0;
+        int lower = 0;
+        int digit = 0;
+        int special = 0;
+
+        char[] char_pass = password.toCharArray();
+
+        for(char c : char_pass){
+            if (Character.isDigit(c))
+                digit = 1;
+
+            if (Character.isUpperCase(c))
+                upper = 1;
+
+            if (Character.isLowerCase(c))
+                lower = 1;
+
+            if (!Character.isLetterOrDigit(c))
+                special = 1;
+        }
+
+        int sum = upper + lower + digit + special;
+
+        switch (sum) {
+            case 1:
+            case 2:
+                return PasswordStrength.WEAK;
+
+            case 3:
+                return PasswordStrength.REASONABLE;
+
+            case 4:
+                if (password.length() < 12)
+                    return PasswordStrength.STRONG;
+                else
+                    return PasswordStrength.VERY_STRONG;
+
+            default:
+                return PasswordStrength.NONE;
+        }
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle SavedInstanceState) {
         super.onViewCreated(view, SavedInstanceState);
 
         ImageButton backButton = view.findViewById(R.id.registerBackButton);
-
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,6 +185,42 @@ public class RegisterFragment extends Fragment {
                                     }
                                 }
                             });
+                }
+            }
+        });
+
+        EditText passwordEdit = view.findViewById(R.id.registerPassword);
+        Drawable defaultEditTextBackground = passwordEdit.getBackground();
+        passwordEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                switch (computePassword(passwordEdit.getText().toString())) {
+                    case WEAK:
+                        passwordEdit.setBackgroundResource(R.drawable.weak_password);
+                        break;
+
+                    case REASONABLE:
+                        passwordEdit.setBackgroundResource(R.drawable.reasonable_password);
+                        break;
+
+                    case STRONG:
+                        passwordEdit.setBackgroundResource(R.drawable.strong_password);
+                        break;
+
+                    case VERY_STRONG:
+                        passwordEdit.setBackgroundResource(R.drawable.very_strong_password);
+                        break;
+
+                    default:
+                        passwordEdit.setBackground(defaultEditTextBackground);
+                        break;
+
                 }
             }
         });
