@@ -12,8 +12,4 @@
     <color name="valid">#009922</color>
     <color name="warning">#F0541E</color>
     <color name="error">#CF000F</color>
-    <color name="weak_password">#CF000F</color>
-    <color name="reasonable_password">#F0541E</color>
-    <color name="strong_password">#009922</color>
-    <color name="very_strong_password">#005500</color>
 </resources>

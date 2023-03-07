@@ -3,12 +3,4 @@
     <string name="welcome_message">Welcome to Stride!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <!-- Connection strings -->
-    <string name="connection.sign_in">Sign In</string>
-    <string name="connection.register">Register</string>
-    <string name="connection.email">E-mail</string>
-    <string name="connection.password">Password</string>
-    <string name="connection.confirm_password">Confirm password</string>
-    <string name="connection.not_same">Password and confirmation are different</string>
 </resources>
