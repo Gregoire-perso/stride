@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Connection strings -->
+    <string name="connection.sign_in">Sign In</string>
+    <string name="connection.register">Register</string>
+    <string name="connection.email">E-mail</string>
+    <string name="connection.password">Password</string>
+    <string name="connection.confirm_password">Confirm password</string>
+    <string name="connection.not_same">Password and confirmation are different</string>
+    <string name="connection.too_short">Given password is too short. Password must be at least 8 characters long.</string>
+    <string name="connection.no_email_or_password">You have to enter an email and a password.</string>
+
+    <!-- Connection colors -->
+    <color name="weak_password">#CF000F</color>
+    <color name="reasonable_password">#F0541E</color>
+    <color name="strong_password">#009922</color>
+    <color name="very_strong_password">#005500</color>
+</resources>
