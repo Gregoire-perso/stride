@@ -11,16 +11,34 @@
         style="@style/Widget.Material3.Button.IconButton.Outlined"
         android:layout_width="150dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="168dp"
+        android:layout_marginTop="92dp"
         android:fontFamily="@font/inter_medium"
         android:text="@string/connection.sign_in"
         android:textColor="@color/blue"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signInPassword"
         app:strokeColor="@color/blue"
         app:strokeWidth="3dp" />
+
+    <TextView
+        android:id="@+id/signInSignInError"
+        android:layout_width="300dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/inter_medium"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/error"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/signInButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signInPassword" />
 
     <TextView
         android:id="@+id/signInText"
@@ -57,31 +75,31 @@
         android:id="@+id/signInPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
         android:ems="10"
         android:hint="@string/connection.password"
         android:inputType="textPassword"
         android:padding="12dp"
         android:textColor="@color/grey"
-        app:layout_constraintBottom_toTopOf="@+id/signInButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInEmail"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintTop_toBottomOf="@+id/signInEmail" />
 
     <EditText
         android:id="@+id/signInEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
         android:ems="10"
         android:hint="@string/connection.email"
         android:inputType="textEmailAddress"
         android:padding="12dp"
         android:textColor="@color/grey"
-        app:layout_constraintBottom_toTopOf="@+id/signInButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInText"
-        app:layout_constraintVertical_bias="0.138" />
+        app:layout_constraintTop_toBottomOf="@+id/signInText" />
 
     <ImageView
         android:id="@+id/signInStrideLogo"

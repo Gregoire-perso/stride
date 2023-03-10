@@ -159,7 +159,11 @@ public class RegisterFragment extends Fragment {
                 TextView registrationError = view.findViewById(R.id.registerRegistrationError);
                 registrationError.setVisibility(View.INVISIBLE);
 
-                if (!password.equals(confirmPassword)) {
+                if (password.length() == 0 || email.length() == 0) {
+                    registrationError.setText(R.string.connection_no_email_or_password);
+                    registrationError.setVisibility(View.VISIBLE);
+                }
+                else if (!password.equals(confirmPassword)) {
                     registrationError.setText(R.string.connection_not_same);
                     registrationError.setVisibility(View.VISIBLE);
                     passwordText.setText("");

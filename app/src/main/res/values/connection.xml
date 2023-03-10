@@ -8,6 +8,7 @@
     <string name="connection.confirm_password">Confirm password</string>
     <string name="connection.not_same">Password and confirmation are different</string>
     <string name="connection.too_short">Given password is too short. Password must be at least 8 characters long.</string>
+    <string name="connection.no_email_or_password">You have to enter an email and a password.</string>
 
     <!-- Connection colors -->
     <color name="weak_password">#CF000F</color>
