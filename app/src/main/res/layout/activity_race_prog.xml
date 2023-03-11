@@ -10,6 +10,7 @@ Source: https://prograide.com/pregunta/20293/commentaires-dans-android-layout-xm
 
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <DatePicker
@@ -23,14 +24,14 @@ Source: https://prograide.com/pregunta/20293/commentaires-dans-android-layout-xm
         android:id="@+id/timePicker1"
         android:layout_width="242dp"
         android:layout_height="85dp"
-        android:layout_marginLeft="130dp"
+        android:layout_marginStart="130dp"
         android:layout_marginTop="445dp"
         android:timePickerMode="spinner" />
     <TimePicker
         android:id="@+id/timePicker2"
         android:layout_width="242dp"
         android:layout_height="77dp"
-        android:layout_marginLeft="130dp"
+        android:layout_marginStart="130dp"
         android:layout_marginTop="500dp"
         android:timePickerMode="spinner" />
     <Button
@@ -39,62 +40,52 @@ Source: https://prograide.com/pregunta/20293/commentaires-dans-android-layout-xm
         android:layout_height="wrap_content"
         android:layout_below="@+id/timePicker2"
         android:layout_marginTop="0dp"
-        android:layout_marginLeft="140dp"
+        android:layout_marginStart="140dp"
         android:layout_centerHorizontal="true"
-        android:text="Ok" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="0dp"
-        android:textSize="18dp"
-        android:textStyle="bold" />
+        android:text="@string/ok_button"/>
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="465dp"
         android:padding="12dp"
-        android:text="Start time: "
-        android:textSize="18dp" />
+        android:text="@string/start_time_txt"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="515dp"
         android:padding="12dp"
-        android:text="End time: "
-        android:textSize="18dp" />
-
+        android:text="@string/end_time_txt"
+        android:textSize="18sp" />
 
 
     <EditText
         android:id="@+id/editText_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginLeft="120dp"
+
+        android:layout_marginStart="120dp"
         android:layout_marginTop="415dp"
         android:ems="10"
-        android:hint="dd-MM-yyyy"
-        android:inputType="date" />
+        android:hint="@string/dd_mm_yyyy_display"
+        android:inputType="date"
+        android:padding="12dp"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/button_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+
         android:layout_centerHorizontal="true"
         android:layout_marginTop="620dp"
-        android:text="Validate" />
+        android:text="@string/validate_button" />
 
 
 
