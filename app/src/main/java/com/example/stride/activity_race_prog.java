@@ -28,6 +28,7 @@ public class activity_race_prog extends AppCompatActivity {
     int pm_am, pm_am2;
     private static final int STORAGE_PERMISSION_CODE = 101;
 
+    //Button btnGet;
     public DatePicker datePicker;
     private EditText editTextDate;
 
@@ -55,8 +56,37 @@ public class activity_race_prog extends AppCompatActivity {
         picker=findViewById(R.id.timePicker1);
         picker2=findViewById(R.id.timePicker2);
         picker.setIs24HourView(false); //false = 12h format / true = 24h format
-        this.datePicker.init( year, month , day , this::datePickerChange);
         this.datePicker = this.findViewById(R.id.datePicker);
+        this.datePicker.init( year, month , day , this::datePickerChange);
+
+/*
+        btnGet=findViewById(R.id.button2);
+
+        btnGet.setOnClickListener(v -> {
+
+            hour = picker.getHour();
+            minute = picker.getMinute();
+            hour2 = picker2.getHour();
+            minute2 = picker2.getMinute();
+
+            if (hour > 12) {
+                pm_am = 0;
+                hour = hour - 12;
+            } else {
+                pm_am = 1;
+            }
+            if (hour2 > 12) {
+                pm_am2 = 0;
+                hour2 = hour2 - 12;
+            } else {
+                pm_am2 = 1;
+            }
+
+            Toast.makeText(activity_race_prog.this, "The :"+day+"/"+ (month+1)+ newline +"Start time: "+ hour +":"+ minute+" "+pm_am+ newline +"End time: "+ hour2 +":"+ minute2+" "+pm_am2, Toast.LENGTH_SHORT).show();
+
+        });*/
+
+
 
         //FIELD OF THE DAY INIT
         this.editTextDate =  this.findViewById(R.id.editText_date);
@@ -134,7 +164,13 @@ public class activity_race_prog extends AppCompatActivity {
         Log.d("Date", "Year=" + year + " Month=" + (month + 1) + " day=" + dayOfMonth);
         this.editTextDate.setText(dayOfMonth +"-" + (month + 1) + "-" + year);
     }
-
+/*
+    public void showDate(int year, int month , int day)  {
+        Toast.makeText(this, "Date: " + day+"-"+ (month+1) +"-"+ year+ newline +
+                        "At: "+hour+":"+minute+pm_am+ newline +
+                        "Until: "+hour2+":"+minute2+pm_am,
+                Toast.LENGTH_LONG).show();
+    }*/
 
     public void checkPermission(String permission, int requestCode)
     {
@@ -168,13 +204,8 @@ public class activity_race_prog extends AppCompatActivity {
         }
     }
 
-    /*
-    public void showDate(int year, int month , int day)  {
-        Toast.makeText(this, "Date: " + day+"-"+ (month+1) +"-"+ year+ newline +
-                        "At: "+hour+":"+minute+pm_am+ newline +
-                        "Until: "+hour2+":"+minute2+pm_am,
-                Toast.LENGTH_LONG).show();
-    }
-    */
+
+
+
 
 }
