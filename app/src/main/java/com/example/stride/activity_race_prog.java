@@ -23,8 +23,7 @@ import java.util.Calendar;
 public class activity_race_prog extends AppCompatActivity {
     TimePicker picker;
     TimePicker picker2;
-    Button btnGet;
-    String newline =System.getProperty("line.separator");
+    //String newline =System.getProperty("line.separator");
     int hour, minute, hour2, minute2;
     int pm_am, pm_am2;
     private static final int STORAGE_PERMISSION_CODE = 101;
@@ -37,6 +36,7 @@ public class activity_race_prog extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        //CHECK THE CALENDAR PERMISSION
         checkPermission("android.permission.WRITE_CALENDAR", STORAGE_PERMISSION_CODE);
 
         super.onCreate(savedInstanceState);
@@ -44,53 +44,27 @@ public class activity_race_prog extends AppCompatActivity {
 
         title = findViewById(R.id.editText_date);
 
+        //CALENDAR INIT
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         int year = calendar.get(Calendar.YEAR);
         int month  = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-
-        //tvw=(TextView)findViewById(R.id.textView2);
+        //TIME PICKERS INIT
         picker=findViewById(R.id.timePicker1);
         picker2=findViewById(R.id.timePicker2);
-        picker.setIs24HourView(false);
-        btnGet=findViewById(R.id.button2);
-
-        btnGet.setOnClickListener(v -> {
-
-            hour = picker.getHour();
-            minute = picker.getMinute();
-            hour2 = picker2.getHour();
-            minute2 = picker2.getMinute();
-
-            if (hour > 12) {
-                pm_am = 0;
-                hour = hour - 12;
-            } else {
-                pm_am = 1;
-            }
-            if (hour2 > 12) {
-                pm_am2 = 0;
-                hour2 = hour2 - 12;
-            } else {
-                pm_am2 = 1;
-            }
-
-            Toast.makeText(activity_race_prog.this, "The :"+day+"/"+ (month+1)+ newline +"Start time: "+ hour +":"+ minute+" "+pm_am+ newline +"End time: "+ hour2 +":"+ minute2+" "+pm_am2, Toast.LENGTH_SHORT).show();
-
-        });
-
-        this.editTextDate =  this.findViewById(R.id.editText_date);
-        Button buttonDate = this.findViewById(R.id.button_date);
+        picker.setIs24HourView(false); //false = 12h format / true = 24h format
+        this.datePicker.init( year, month , day , this::datePickerChange);
         this.datePicker = this.findViewById(R.id.datePicker);
 
-        this.datePicker.init( year, month , day , this::datePickerChange);
-
+        //FIELD OF THE DAY INIT
+        this.editTextDate =  this.findViewById(R.id.editText_date);
+        Button buttonDate = this.findViewById(R.id.button_date);
 
         buttonDate.setOnClickListener(v -> {
 
-
+            //CHOOSE THE HOURS
             hour = picker.getHour();
             minute = picker.getMinute();
             hour2 = picker2.getHour();
@@ -109,12 +83,13 @@ public class activity_race_prog extends AppCompatActivity {
                 pm_am2 = 1;
             }
 
-
+            //CHOOSE THE DAY
             int year1 = datePicker.getYear();
-            int month1 = datePicker.getMonth(); // 0 - 11
+            int month1 = datePicker.getMonth(); // 0 = jan / 11=dec
             int day1 = datePicker.getDayOfMonth();
-            showDate(year1, month1, day1);
+            //showDate(year1, month1, day1);
 
+            //ADD A EVENT IN THE CALENDAR
             if(!title.getText().toString().isEmpty())
             {
                 AddCalendarEvent(year1, month1, day1, hour, hour2, minute);
@@ -130,6 +105,7 @@ public class activity_race_prog extends AppCompatActivity {
 
 
     public void AddCalendarEvent( int y, int m, int d, int h, int h2, int min) {
+        //SET THE CALENDAR WITH THE HOURS AND DAY CHOSEN
         Calendar calendarEvent = Calendar.getInstance();
         System.out.println("first values: " + calendarEvent.getTime());
         calendarEvent.set(Calendar.MONTH, m);
@@ -138,7 +114,7 @@ public class activity_race_prog extends AppCompatActivity {
         calendarEvent.set(Calendar.HOUR, h);
         calendarEvent.set(Calendar.MINUTE, min);
 
-
+        //SET THE EVENT
         Intent i = new Intent(Intent.ACTION_EDIT);
         i.setType("vnd.android.cursor.item/event");
         i.putExtra("beginTime", calendarEvent.getTimeInMillis());
@@ -146,6 +122,7 @@ public class activity_race_prog extends AppCompatActivity {
         i.putExtra("endTime", calendarEvent.getTimeInMillis() + (long)60 * 60*(h2-h) * 1000);
         i.putExtra("title", "Run");
         try {
+            //OPEN GOOGLE CALENDAR
             startActivity(i);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(activity_race_prog.this, "There is no app that support this action", Toast.LENGTH_SHORT).show();
@@ -158,12 +135,6 @@ public class activity_race_prog extends AppCompatActivity {
         this.editTextDate.setText(dayOfMonth +"-" + (month + 1) + "-" + year);
     }
 
-    public void showDate(int year, int month , int day)  {
-                Toast.makeText(this, "Date: " + day+"-"+ (month+1) +"-"+ year+ newline +
-                "At: "+hour+":"+minute+pm_am+ newline +
-                "Until: "+hour2+":"+minute2+pm_am,
-                Toast.LENGTH_LONG).show();
-    }
 
     public void checkPermission(String permission, int requestCode)
     {
@@ -197,5 +168,13 @@ public class activity_race_prog extends AppCompatActivity {
         }
     }
 
+    /*
+    public void showDate(int year, int month , int day)  {
+        Toast.makeText(this, "Date: " + day+"-"+ (month+1) +"-"+ year+ newline +
+                        "At: "+hour+":"+minute+pm_am+ newline +
+                        "Until: "+hour2+":"+minute2+pm_am,
+                Toast.LENGTH_LONG).show();
+    }
+    */
 
 }
