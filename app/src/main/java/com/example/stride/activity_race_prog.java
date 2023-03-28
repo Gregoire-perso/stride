@@ -27,7 +27,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Time;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class activity_race_prog extends AppCompatActivity {
     TimePicker picker;
@@ -36,6 +39,7 @@ public class activity_race_prog extends AppCompatActivity {
     private DatabaseReference reference;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
+    private User us;
     //String newline =System.getProperty("line.separator");
     int hour, minute, hour2, minute2;
     int pm_am, pm_am2;
@@ -143,7 +147,24 @@ public class activity_race_prog extends AppCompatActivity {
 
                 //insert a firebase
                 reference = database.getReference().child("Users").child(user.getUid());
+                ValueEventListener postListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get Post object and use the values to update the UI
+                        us = (User)dataSnapshot.getValue();
+                    }
 
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Getting Post failed, log a message
+                        //Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                    }
+                };
+                reference.addValueEventListener(postListener);
+                Date date = new GregorianCalendar(year1, month1, day1).getTime();
+                us.AddRun(new Time(year1+month1+day1+hour+minute));
+                us.AddRun((Time) date);
+                System.out.println((Time) date + "/" +new Time(year1+month1+day1+hour+minute));
 
 
             }

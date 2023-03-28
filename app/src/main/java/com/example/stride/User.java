@@ -1,6 +1,9 @@
 package com.example.stride;
 
 
+import java.sql.Time;
+import java.util.List;
+
 public class User {
 
     public String Uid;
@@ -8,6 +11,8 @@ public class User {
     public String name;
     public String birth;
     public String email;
+
+    protected List<Time> run;
 
 
     public User(String Uid, String email)
@@ -17,6 +22,12 @@ public class User {
         this.name = "Enter your name";
         this.birth = null;
     }
+
+    public void AddRun(Time t)
+    {
+        run.add(t);
+    }
+
 
 
 }
