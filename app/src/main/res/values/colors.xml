@@ -8,4 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="stride">#0A2463</color>
+    <color name="blue">#0A2463</color>
+    <color name="grey">#808080</color>
+    <color name="valid">#009922</color>
+    <color name="warning">#F0541E</color>
+    <color name="error">#CF000F</color>
 </resources>
