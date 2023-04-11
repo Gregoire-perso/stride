@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -29,6 +30,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +46,9 @@ import com.google.firebase.auth.FirebaseUser;
 public class RegisterFragment extends Fragment {
 
     private FirebaseAuth mAuth;
+
+    public FirebaseDatabase database;
+    private DatabaseReference reference;
 
     private enum PasswordStrength {
         NONE,
@@ -70,6 +81,10 @@ public class RegisterFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        //Fabio
+        database = FirebaseDatabase.getInstance("https://stride-99148-default-rtdb.europe-west1.firebasedatabase.app");;
+        reference = database.getReference().child("Users");
+
     }
 
     @Override
@@ -79,7 +94,8 @@ public class RegisterFragment extends Fragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //if(currentUser != null){
         //    reload();
-        //}
+
+
     }
 
     @Override
@@ -135,6 +151,13 @@ public class RegisterFragment extends Fragment {
         }
     }
 
+    public void createNewUser(String Uid, String email)
+    {
+        User newUser = new User(Uid, email);
+        reference.child(Uid).setValue(newUser);
+    }
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle SavedInstanceState) {
         super.onViewCreated(view, SavedInstanceState);
@@ -174,8 +197,7 @@ public class RegisterFragment extends Fragment {
                     registrationError.setVisibility(View.VISIBLE);
                 }
                 else {
-                    mAuth.createUserWithEmailAndPassword(email, password)
-                            .addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
+                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
@@ -184,6 +206,8 @@ public class RegisterFragment extends Fragment {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         // TODO
                                         //updateUI(user);
+                                        createNewUser(user.getUid(),email);
+
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -196,6 +220,7 @@ public class RegisterFragment extends Fragment {
                 }
             }
         });
+
 
         EditText passwordEdit = view.findViewById(R.id.registerPassword);
         Drawable defaultEditTextBackground = passwordEdit.getBackground();
