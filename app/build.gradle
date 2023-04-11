@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.stride"
-        minSdk 24
+        minSdk 26
         targetSdk 33
         multiDexEnabled true
         versionCode 1

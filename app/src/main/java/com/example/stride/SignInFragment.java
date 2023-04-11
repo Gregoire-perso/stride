@@ -3,6 +3,7 @@ package com.example.stride;
 import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -111,6 +112,8 @@ public class SignInFragment extends Fragment {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signInWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
+                                        Intent i = new Intent((Activity) getContext(), activity_race_prog.class);
+                                        startActivity(i);
                                         //updateUI(user);
                                     } else {
                                         // If sign in fails, display a message to the user.

@@ -29,17 +29,16 @@
         <activity
             android:name=".EditProfileActivity"
             android:exported="true" />
-	</activity>
 
-	<activity
+        <activity
 
-	    android:name=".activity_race_prog"
-	    android:exported="true">
-	</activity>
+            android:name=".activity_race_prog"
+            android:exported="true">
+        </activity>
 
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-    </application>
+            <meta-data
+                android:name="preloaded_fonts"
+                android:resource="@array/preloaded_fonts" />
+        </application>
 
 </manifest>
