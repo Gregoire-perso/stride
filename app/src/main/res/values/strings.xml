@@ -10,4 +10,10 @@
     <string name="dd_mm_yyyy_display">dd-MM-yyyy</string>
     <string name="validate_button">Validate</string>
     <string name="title_activity_choose_route">ChooseRouteActivity</string>
+    <string-array name="genders">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Non-Binary</item>
+        <item>Prefer not to say</item>
+    </string-array>
 </resources>

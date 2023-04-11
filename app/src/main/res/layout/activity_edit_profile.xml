@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="360dp"
-        android:layout_height="499dp"
+        android:layout_height="524dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="194dp"
         android:layout_marginEnd="51dp"
@@ -35,13 +35,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <EditText
             android:id="@+id/userName"
             android:layout_width="126dp"
             android:layout_height="48dp"
             android:layout_marginStart="19dp"
             android:layout_marginTop="79dp"
             android:gravity="center_vertical"
+            android:inputType="none"
             android:text="name"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -63,14 +64,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-        <TextView
+        <EditText
             android:id="@+id/userAge"
             android:layout_width="126dp"
             android:layout_height="48dp"
             android:layout_marginStart="19dp"
             android:layout_marginTop="27dp"
-            android:gravity="center_vertical"
+            android:inputType="number"
             android:text="age"
+            android:gravity="center_vertical"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="normal"
@@ -86,19 +88,20 @@
             android:gravity="center_vertical"
             android:text="Gender"
             android:textColor="@color/stride"
+            android:entries="@array/genders"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
-        <TextView
+        <Spinner
             android:id="@+id/userGender"
             android:layout_width="126dp"
             android:layout_height="48dp"
             android:layout_marginStart="19dp"
             android:layout_marginTop="27dp"
+            android:entries="@array/genders"
             android:gravity="center_vertical"
-            android:text="gender"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="normal"
@@ -119,16 +122,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
-        <TextView
+        <EditText
             android:id="@+id/userEmail"
             android:layout_width="126dp"
             android:layout_height="48dp"
             android:layout_marginStart="19dp"
             android:layout_marginTop="60dp"
             android:gravity="center_vertical"
+            android:inputType="none"
             android:text="email"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="12sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView10"
             app:layout_constraintTop_toBottomOf="@+id/userGender" />
@@ -147,13 +151,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
-        <TextView
+        <EditText
             android:id="@+id/userPassword"
             android:layout_width="126dp"
             android:layout_height="48dp"
             android:layout_marginStart="19dp"
             android:layout_marginTop="27dp"
             android:gravity="center_vertical"
+            android:inputType="none"
             android:text="password"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -166,55 +171,77 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginTop="79dp"
-            android:background="@color/stride"
             android:contentDescription="edit user name"
             app:layout_constraintStart_toEndOf="@+id/userName"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
+            android:background="@drawable/edit" />
 
         <ImageButton
             android:id="@+id/imageButton2"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginTop="27dp"
-            android:background="@color/stride"
             android:contentDescription="edit user age"
             app:layout_constraintStart_toEndOf="@+id/userAge"
             app:layout_constraintTop_toBottomOf="@+id/imageButton"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
-
-        <ImageButton
-            android:id="@+id/imageButton3"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="27dp"
-            android:background="@color/stride"
-            android:contentDescription="edit user gender"
-            app:layout_constraintStart_toEndOf="@+id/userGender"
-            app:layout_constraintTop_toBottomOf="@+id/imageButton2"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
+            android:background="@drawable/edit" />
 
         <ImageButton
             android:id="@+id/imageButton4"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginTop="60dp"
-            android:background="@color/stride"
+            android:layout_marginTop="135dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="27dp"
+            android:background="@drawable/edit"
             android:contentDescription="edit user email"
+            app:layout_constraintBottom_toTopOf="@+id/imageButton5"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/userPassword"
-            app:layout_constraintTop_toBottomOf="@+id/imageButton3"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
+            app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
 
         <ImageButton
             android:id="@+id/imageButton5"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginTop="27dp"
-            android:background="@color/stride"
             android:contentDescription="edit user password"
             app:layout_constraintStart_toEndOf="@+id/userPassword"
             app:layout_constraintTop_toBottomOf="@+id/imageButton4"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
+            android:background="@drawable/edit" />
+
+        <Button
+            android:id="@+id/updateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="138dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="130dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="@color/stride"
+            android:text="Update"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+        <TextView
+            android:id="@+id/invalidAge"
+            android:layout_width="308dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="45dp"
+            android:layout_marginBottom="33dp"
+            android:gravity="center_vertical"
+            android:text="Enter a valid age (over 13 and under 120) !"
+            android:textColor="@color/error"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/textView8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -234,6 +261,21 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton7"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginBottom="127dp"
+        android:background="@drawable/back"
+        android:contentDescription="button to go back to the profile view"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toStartOf="@+id/textView6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
