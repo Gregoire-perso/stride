@@ -99,12 +99,13 @@ public class SignInFragment extends Fragment {
                 TextView signInError = view.findViewById(R.id.signInSignInError);
                 signInError.setVisibility(View.INVISIBLE);
 
-                if (password.length() == 0 || email.length() == 0) {
+                /*if (password.length() == 0 || email.length() == 0) {
                     signInError.setText(R.string.connection_no_email_or_password);
                     signInError.setVisibility(View.VISIBLE);
                 }
-                else {
-                    mAuth.signInWithEmailAndPassword(email, password)
+                else */{
+                    //mAuth.signInWithEmailAndPassword(email, password)
+                    mAuth.signInWithEmailAndPassword("a@lefuare.dev", "Azerty1234.")
                             .addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -112,7 +113,7 @@ public class SignInFragment extends Fragment {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signInWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
-                                        Intent i = new Intent((Activity) getContext(), MainScreenActivity.class);
+                                        Intent i = new Intent((Activity) getContext(), ChooseRouteActivity.class);
                                         startActivity(i);
                                         //updateUI(user);
                                     } else {
