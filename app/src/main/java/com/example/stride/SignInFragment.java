@@ -113,7 +113,7 @@ public class SignInFragment extends Fragment {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signInWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
-                                        Intent i = new Intent((Activity) getContext(), ChooseRouteActivity.class);
+                                        Intent i = new Intent((Activity) getContext(), TrackRunActivity.class);
                                         startActivity(i);
                                         //updateUI(user);
                                     } else {

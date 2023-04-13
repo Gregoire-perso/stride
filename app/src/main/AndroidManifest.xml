@@ -32,7 +32,7 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
-            android:name=".ChooseRouteActivity"
+            android:name=".TrackRunActivity"
             android:exported="false"
             android:label="@string/title_activity_choose_route" />
         <activity
