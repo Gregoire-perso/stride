@@ -147,6 +147,13 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     /**
+     * This function will update the metrics and display their new values
+     */
+    private void updateMetrics() {
+
+    }
+
+    /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
