@@ -31,9 +31,22 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    private enum RunState {
+        NOT_STARTED,
+        ONGOING,
+        PAUSED,
+        ENDED
+    }
+
+    private enum MetricsName {
+        TIME,
+        DISTANCE
+    }
 
     private GoogleMap mMap;
     private MapView mapView;
@@ -43,11 +56,18 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
     private LocationManager locationManager;
     private LocationListener locationListener;
     private LatLng lastPosition = null;
-    private boolean running = false;
+    private RunState runState = RunState.NOT_STARTED;
+
+    private HashMap<MetricsName, Float> metrics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Init metrics
+        metrics = new HashMap<>();
+        for (MetricsName m : MetricsName.values())
+            metrics.put(m, (float) 0);
 
         setContentView(R.layout.activity_choose_route);
 
@@ -57,32 +77,73 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        Button startStopButton = findViewById(R.id.startStopButton);
-        startStopButton.setOnClickListener(new View.OnClickListener() {
+        Button stateButton = findViewById(R.id.runStateButton);
+        stateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (running)
-                    startStopButton.setText(R.string.start_run_button);
+                switch (runState) {
+                    case NOT_STARTED:
+                        stateButton.setText(R.string.pause_run_button);
+                        startRun();
+                        break;
 
-                else
-                    startStopButton.setText(R.string.stop_run_button);
+                    case ONGOING:
+                        stateButton.setText(R.string.resume_run_button);
+                        pauseRun();
+                        break;
 
-                running ^= true;
+                    case PAUSED:
+                        stateButton.setText(R.string.pause_run_button);
+                        resumeRun();
+                        break;
+                }
+            }
+        });
 
-                setupTrack();
+        Button stopButton = findViewById(R.id.stopRunButton);
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopRun();
             }
         });
     }
 
     /**
-     * This will setup the track line with a defined color and joint type shape
+     * This function is called at the beginning of the run
      */
-    private void setupTrack() {
+    private void startRun() {
         myTrack = mMap.addPolyline(new PolylineOptions().clickable(false));
         myTrack.setJointType(JointType.ROUND);
         myTrack.setColor(Color.BLUE);
         myTrack.setStartCap(new RoundCap());
         myTrack.setEndCap(new ButtCap());
+
+        // Activate the stop button
+        findViewById(R.id.stopRunButton).setActivated(true);
+
+        runState = RunState.ONGOING;
+    }
+
+    /**
+     * This function is called when the run is paused
+     */
+    private void pauseRun() {
+        runState = RunState.PAUSED;
+    }
+
+    /**
+     * This function is called when the run is resumed
+     */
+    private void resumeRun() {
+        runState = RunState.ONGOING;
+    }
+
+    /**
+     * This function is called when the run is stopped
+     */
+    private void stopRun() {
+        runState = RunState.ENDED;
     }
 
     /**
@@ -147,7 +208,7 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     private void drawTrack(LatLng latLng) {
-        if (running) {
+        if (runState == RunState.ONGOING) {
             List<LatLng> prevPoints = myTrack.getPoints();
             prevPoints.add(latLng);
             myTrack.setPoints(prevPoints);
