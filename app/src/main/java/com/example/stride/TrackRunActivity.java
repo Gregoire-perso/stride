@@ -215,10 +215,56 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     /**
+     * @return the length of the track in meters
+     */
+    private long computePolylineDistance() {
+        long total_distance = 0;
+        List<LatLng> points = myTrack.getPoints();
+        LatLng prev_point = points.get(0);
+        LatLng cur_point = null;
+        float[] result = new float[0];
+        for (int i = 1; i < points.size(); i++) {
+            cur_point = points.get(i);
+            Location.distanceBetween(prev_point.latitude, prev_point.longitude, cur_point.latitude, cur_point.longitude, result);
+            total_distance += result[0];
+            prev_point = cur_point;
+        }
+
+        return total_distance;
+    }
+
+    /**
      * This function will update the metrics and display their new values
      */
     private void updateMetrics() {
+        // Update of the distance
+        metrics.replace(MetricsName.DISTANCE, computePolylineDistance());
+        double km = metrics.get(MetricsName.DISTANCE) / 10f;
 
+        String distance = String.format("%.2f", km);
+
+        ((TextView) findViewById(R.id.distanceText)).setText(distance);
+
+        // Update of the height
+
+        // Update of the pace
+        metrics.replace(MetricsName.PACE, metrics.get(MetricsName.HUNDREDTH_SECS) / metrics.get(MetricsName.DISTANCE));
+        long hundredthSecs = metrics.get(MetricsName.PACE) % 100;
+        long secs = metrics.get(MetricsName.PACE) / 100;
+        long minutes = secs / 60;
+
+        // Format the seconds into hours, minutes,
+        // and seconds.
+        String time = String.format(Locale.getDefault(),
+                "%02d:%02d:%02d",
+                minutes,
+                secs,
+                hundredthSecs);
+
+        // Set the text view text
+        ((TextView) findViewById(R.id.paceText)).setText(time);
+
+        // Update of the calories consumption
     }
 
     /**
