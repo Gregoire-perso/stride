@@ -8,10 +8,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +35,7 @@ import com.google.android.gms.maps.model.RoundCap;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -44,8 +47,11 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     private enum MetricsName {
-        TIME,
-        DISTANCE
+        HUNDREDTH_SECS, // In hundredth of seconds
+        DISTANCE, // In meters
+        HEIGHT, // In meters
+        PACE, // In hundredth of seconds per meters
+        CALORIES
     }
 
     private GoogleMap mMap;
@@ -57,8 +63,7 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
     private LocationListener locationListener;
     private LatLng lastPosition = null;
     private RunState runState = RunState.NOT_STARTED;
-
-    private HashMap<MetricsName, Float> metrics;
+    private HashMap<MetricsName, Long> metrics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +72,7 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
         // Init metrics
         metrics = new HashMap<>();
         for (MetricsName m : MetricsName.values())
-            metrics.put(m, (float) 0);
+            metrics.put(m, (long) 0);
 
         setContentView(R.layout.activity_choose_route);
 
@@ -121,6 +126,69 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
 
         // Activate the stop button
         findViewById(R.id.stopRunButton).setActivated(true);
+
+        /**
+         * Create and start the stop watch
+         */
+        // Get the text view.
+        TextView timeView
+                = (TextView)findViewById(
+                R.id.stopWatchText);
+
+        // Creates a new Handler
+        Handler stopWatchHandler
+                = new Handler();
+
+        // Call the post() method,
+        // passing in a new Runnable.
+        // The post() method processes
+        // code without a delay,
+        // so the code in the Runnable
+        // will run almost immediately.
+        stopWatchHandler.post(new Runnable() {
+            @Override
+
+            public void run()
+            {
+                long hundredthSecs = metrics.get(MetricsName.HUNDREDTH_SECS) % 100;
+                long secs = metrics.get(MetricsName.HUNDREDTH_SECS) / 100;
+                long minutes = secs / 60;
+
+                // Format the seconds into hours, minutes,
+                // and seconds.
+                String time = String.format(Locale.getDefault(),
+                                     "%02d:%02d:%02d",
+                                            minutes,
+                                            secs,
+                                            hundredthSecs);
+
+                // Set the text view text.
+                timeView.setText(time);
+
+                // If running is true, increment the
+                // seconds variable.
+                if (runState == RunState.ONGOING) {
+                    metrics.replace(MetricsName.HUNDREDTH_SECS, metrics.get(MetricsName.HUNDREDTH_SECS) + 1);
+                }
+
+                // Post the code again
+                // with a delay of 0.01 second.
+                stopWatchHandler.postDelayed(this, 10);
+            }
+        });
+
+        /**
+         * Start monitoring and updating the other metrics
+         */
+        Handler metricsHandler = new Handler();
+        metricsHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                updateMetrics();
+                // Update metrics every second
+                metricsHandler.postDelayed(this, 1000);
+            }
+        });
 
         runState = RunState.ONGOING;
     }

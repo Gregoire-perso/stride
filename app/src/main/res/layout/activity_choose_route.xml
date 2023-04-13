@@ -12,11 +12,12 @@
         android:id="@+id/paceImage"
         android:layout_width="41dp"
         android:layout_height="42dp"
+        android:layout_marginTop="540dp"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintHorizontal_bias="0.5"
         map:layout_constraintStart_toEndOf="@+id/caloriesImage"
-        map:srcCompat="@drawable/timer_5019"
-        tools:layout_editor_absoluteY="540dp" />
+        map:layout_constraintTop_toTopOf="parent"
+        map:srcCompat="@drawable/timer_5019" />
 
     <TextView
         android:id="@+id/paceText"
@@ -31,18 +32,18 @@
         map:layout_constraintTop_toBottomOf="@+id/paceImage" />
 
     <TextView
-        android:id="@+id/chronoText"
+        android:id="@+id/stopWatchText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
         android:textAlignment="center"
         map:layout_constraintBottom_toTopOf="@+id/paceImage"
-        map:layout_constraintEnd_toEndOf="@+id/chronoImage"
-        map:layout_constraintStart_toStartOf="@+id/chronoImage"
-        map:layout_constraintTop_toBottomOf="@+id/chronoImage" />
+        map:layout_constraintEnd_toEndOf="@+id/stopWatchImage"
+        map:layout_constraintStart_toStartOf="@+id/stopWatchImage"
+        map:layout_constraintTop_toBottomOf="@+id/stopWatchImage" />
 
     <ImageView
-        android:id="@+id/chronoImage"
+        android:id="@+id/stopWatchImage"
         android:layout_width="41dp"
         android:layout_height="42dp"
         android:layout_marginTop="40dp"
@@ -89,11 +90,12 @@
         android:id="@+id/caloriesImage"
         android:layout_width="41dp"
         android:layout_height="43dp"
+        android:layout_marginTop="540dp"
         map:layout_constraintEnd_toStartOf="@+id/paceImage"
         map:layout_constraintHorizontal_bias="0.5"
         map:layout_constraintStart_toStartOf="parent"
-        map:srcCompat="@drawable/flamme_cal"
-        tools:layout_editor_absoluteY="540dp" />
+        map:layout_constraintTop_toTopOf="parent"
+        map:srcCompat="@drawable/flamme_cal" />
 
     <TextView
         android:id="@+id/distanceText"
@@ -111,7 +113,7 @@
         android:layout_width="41dp"
         android:layout_height="42dp"
         android:layout_marginTop="40dp"
-        map:layout_constraintEnd_toStartOf="@+id/chronoImage"
+        map:layout_constraintEnd_toStartOf="@+id/stopWatchImage"
         map:layout_constraintHorizontal_bias="0.5"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toBottomOf="@+id/runStateButton"
@@ -119,7 +121,7 @@
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="349dp"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
