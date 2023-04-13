@@ -1,0 +1,4 @@
+<resources>
+    <string name="start_run_button">Start run!</string>
+    <string name="stop_run_button">Stop run!</string>
+</resources>
