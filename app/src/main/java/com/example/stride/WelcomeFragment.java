@@ -1,5 +1,8 @@
 package com.example.stride;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,21 +59,28 @@ public class WelcomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle SavedInstanceState) {
         super.onViewCreated(view, SavedInstanceState);
 
-        Button SignInButton = view.findViewById(R.id.signInFragButton);
-        SignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_signInFragment);
-            }
-        });
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Button SignInButton = view.findViewById(R.id.signInFragButton);
+            SignInButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_signInFragment);
+                }
+            });
 
-        Button RegisterButton = view.findViewById(R.id.registerFragButton);
+            Button RegisterButton = view.findViewById(R.id.registerFragButton);
 
-        RegisterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_registerFragment);
-            }
-        });
+            RegisterButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_registerFragment);
+                }
+            });
+        }
+
+        else {
+            Intent i = new Intent((Activity) getContext(), activity_race_prog.class);
+            startActivity(i);
+        }
     }
 }
