@@ -243,7 +243,7 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                User us = (User)dataSnapshot.getValue(User.class);
+                User us = dataSnapshot.getValue(User.class);
                 LocalDateTime test = LocalDateTime.now();
                 Run cur_run = new Run(test.toString());
                 cur_run.setCalories(metrics.get(MetricsName.CALORIES));
