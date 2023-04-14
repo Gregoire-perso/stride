@@ -13,7 +13,7 @@ public class User {
     protected String birth;
     protected String email;
 
-    protected List<String> run = new ArrayList<String>();
+    protected List<Run> run = new ArrayList<Run>();
 
     public User(){}
 
@@ -34,7 +34,7 @@ public class User {
         return email;
     }
 
-    public List<String> getRun() {
+    public List<Run> getRun() {
         return run;
     }
 
@@ -49,7 +49,7 @@ public class User {
 
     public void AddRun(String t)
     {
-        run.add(t);
+        run.add(new Run(t));
     }
 
 
