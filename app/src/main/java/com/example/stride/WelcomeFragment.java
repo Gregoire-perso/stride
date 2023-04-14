@@ -1,6 +1,7 @@
 package com.example.stride;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -55,32 +56,41 @@ public class WelcomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_welcome, container, false);
     }
 
+    private void connectionButtons(View view) {
+        Button SignInButton = view.findViewById(R.id.signInFragButton);
+        SignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_signInFragment);
+            }
+        });
+
+        Button RegisterButton = view.findViewById(R.id.registerFragButton);
+
+        RegisterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_registerFragment);
+            }
+        });
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle SavedInstanceState) {
         super.onViewCreated(view, SavedInstanceState);
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            Button SignInButton = view.findViewById(R.id.signInFragButton);
-            SignInButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_signInFragment);
-                }
-            });
-
-            Button RegisterButton = view.findViewById(R.id.registerFragButton);
-
-            RegisterButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_registerFragment);
-                }
-            });
+            connectionButtons(view);
         }
-
         else {
-            Intent i = new Intent((Activity) getContext(), activity_race_prog.class);
-            startActivity(i);
+            SharedPreferences prefs = getActivity().getSharedPreferences("REMEMBER_ME", Context.MODE_PRIVATE);
+            if (prefs.getBoolean("Remember me", false))
+                connectionButtons(view);
+
+            else {
+                Intent i = new Intent((Activity) getContext(), TrackRunActivity.class);
+                startActivity(i);
+            }
         }
     }
 }
