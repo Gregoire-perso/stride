@@ -3,7 +3,9 @@ package com.example.stride;
 import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -113,6 +116,14 @@ public class SignInFragment extends Fragment {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signInWithEmail:success");
+                                        if (((CheckBox) view.findViewById(R.id.rememberMeBox)).isChecked()) {
+                                            SharedPreferences prefs = ((Activity) getContext()).getSharedPreferences("REMEMBER_ME", Context.MODE_PRIVATE);
+                                            prefs.edit().putBoolean("Remember me", true);
+                                        }
+                                        else {
+                                            SharedPreferences prefs = ((Activity) getContext()).getSharedPreferences("REMEMBER_ME", Context.MODE_PRIVATE);
+                                            prefs.edit().putBoolean("Remember me", false);
+                                        }
                                         Intent i = new Intent((Activity) getContext(), TrackRunActivity.class);
                                         startActivity(i);
                                         //updateUI(user);
