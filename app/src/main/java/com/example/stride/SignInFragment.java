@@ -25,10 +25,8 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthSettings;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
@@ -116,7 +114,7 @@ public class SignInFragment extends Fragment {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signInWithEmail:success");
-                                        if (((CheckBox) view.findViewById(R.id.rememberMeBox)).isChecked()) {
+                                        if (((CheckBox) view.findViewById(R.id.signInRememberMeBox)).isChecked()) {
                                             SharedPreferences prefs = ((Activity) getContext()).getSharedPreferences("REMEMBER_ME", Context.MODE_PRIVATE);
                                             prefs.edit().putBoolean("Remember me", true);
                                         }

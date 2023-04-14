@@ -112,7 +112,7 @@
         app:layout_constraintVertical_bias="0.07" />
 
     <CheckBox
-        android:id="@+id/rememberMeBox"
+        android:id="@+id/signInRememberMeBox"
         android:layout_width="160dp"
         android:layout_height="35dp"
         android:textColor="@color/grey"
