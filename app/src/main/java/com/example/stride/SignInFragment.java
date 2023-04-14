@@ -37,6 +37,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class SignInFragment extends Fragment {
 
     private FirebaseAuth mAuth;
+    private Context context;
 
     public SignInFragment() {
         // Required empty public constructor
@@ -60,6 +61,8 @@ public class SignInFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+
+        context = getActivity().getApplicationContext();
     }
 
     @Override
@@ -114,14 +117,9 @@ public class SignInFragment extends Fragment {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signInWithEmail:success");
-                                        if (((CheckBox) view.findViewById(R.id.signInRememberMeBox)).isChecked()) {
-                                            SharedPreferences prefs = ((Activity) getContext()).getSharedPreferences("REMEMBER_ME", Context.MODE_PRIVATE);
-                                            prefs.edit().putBoolean("Remember me", true);
-                                        }
-                                        else {
-                                            SharedPreferences prefs = ((Activity) getContext()).getSharedPreferences("REMEMBER_ME", Context.MODE_PRIVATE);
-                                            prefs.edit().putBoolean("Remember me", false);
-                                        }
+                                        ((ConnectionActivity) getActivity()).setRememberMe(
+                                                ((CheckBox) view.findViewById(R.id.signInRememberMeBox)).isChecked());
+
                                         Intent i = new Intent((Activity) getContext(), TrackRunActivity.class);
                                         startActivity(i);
                                         //updateUI(user);

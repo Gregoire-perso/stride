@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,8 +84,7 @@ public class WelcomeFragment extends Fragment {
             connectionButtons(view);
         }
         else {
-            SharedPreferences prefs = getActivity().getSharedPreferences("REMEMBER_ME", Context.MODE_PRIVATE);
-            if (prefs.getBoolean("Remember me", false))
+            if (!((ConnectionActivity) getActivity()).getRememberMe())
                 connectionButtons(view);
 
             else {
