@@ -2,6 +2,7 @@ package com.example.stride;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -69,7 +70,7 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
     private boolean locationPermissionGranted = false;
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private LatLng lastPosition = null;
+    private Location lastPosition = null;
     private RunState runState = RunState.NOT_STARTED;
     private HashMap<MetricsName, Long> metrics;
 
@@ -95,7 +96,7 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
         for (MetricsName m : MetricsName.values())
             metrics.put(m, (long) 0);
 
-        setContentView(R.layout.activity_choose_route);
+        setContentView(R.layout.activity_track_run);
 
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -130,7 +131,12 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                stopRun();
+                if (runState == RunState.ENDED) {
+                    Intent i = new Intent(TrackRunActivity.this, MainScreenActivity.class);
+                    startActivity(i);
+                }
+                else
+                    stopRun();
             }
         });
     }
@@ -237,6 +243,7 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
     private void stopRun() {
         runState = RunState.ENDED;
         ((Button) findViewById(R.id.runStateButton)).setEnabled(false);
+        ((Button) findViewById(R.id.stopRunButton)).setText(R.string.back_to_main_menu_button);
 
         reference = database.getReference().child("Users").child(user.getUid());
         ValueEventListener postListener = new ValueEventListener() {
@@ -294,11 +301,15 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
         metrics.replace(MetricsName.DISTANCE, computePolylineDistance());
         float km = metrics.get(MetricsName.DISTANCE) / 1000f;
 
-        String distance = String.format("%.2f", km);
+        String distance = String.format("%.2f km", km);
 
         ((TextView) findViewById(R.id.distanceText)).setText(distance);
 
         // Update of the height
+        String text = String.format("%d m", metrics.get(MetricsName.HEIGHT));
+
+        ((TextView) findViewById(R.id.heightText)).setText(text);
+
 
         // Update of the pace
         if (metrics.get(MetricsName.DISTANCE) != 0) {
@@ -313,7 +324,7 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
         // Format the seconds into hours, minutes,
         // and seconds.
         String time = String.format(Locale.getDefault(),
-                "%02d:%02d:%02d",
+                "%02d\'%02d\"%02d",
                 minutes,
                 secs,
                 hundredthSecs);
@@ -322,6 +333,14 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
         ((TextView) findViewById(R.id.paceText)).setText(time);
 
         // Update of the calories consumption
+        // Formulas found source tkt
+        double calPerStep = 0.03753; // Assuming that your weight is 70kg and your height is 170 cm and your speed is average
+        double sizeOfStep = 0.74; // In meter
+        long numberOfSteps = (long) (sizeOfStep * metrics.get(MetricsName.DISTANCE));
+        metrics.replace(MetricsName.CALORIES, (long) (numberOfSteps * calPerStep));
+        String cal = String.format("%d kcal", metrics.get(MetricsName.CALORIES));
+
+        ((TextView) findViewById(R.id.caloriesText)).setText(cal);
     }
 
     /**
@@ -338,8 +357,9 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        mMap.setMinZoomPreference(1f);
-        mMap.setMaxZoomPreference(20f);
+        mMap.setMinZoomPreference(5f);
+        mMap.setMaxZoomPreference(40f);
+
         // Prompt the user for permission.
         getLocationPermission();
 
@@ -352,10 +372,15 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void onLocationChanged(Location location) {
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                if (latLng != lastPosition) {
+                LatLng lastLatLng = null;
+                if (lastPosition != null)
+                    lastLatLng = new LatLng(lastPosition.getLatitude(), lastPosition.getLongitude());
+                if (latLng != lastLatLng) {
                     updateCameraPosition(latLng);
                     drawTrack(latLng);
-                    lastPosition = latLng;
+                    lastPosition = location;
+                    if (lastPosition.getAltitude() < location.getAltitude())
+                        metrics.replace(MetricsName.HEIGHT, metrics.get(MetricsName.HEIGHT) + (long) (location.getAltitude() - lastPosition.getAltitude()));
                 }
             }
         };
