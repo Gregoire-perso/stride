@@ -52,8 +52,9 @@ public class User {
         run.add(new Run(t));
     }
 
-
-
+    public void AddRun(Run run) {
+        this.run.add(run);
+    }
 }
 
 
