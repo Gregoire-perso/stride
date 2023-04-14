@@ -3,4 +3,5 @@
     <string name="pause_run_button">Pause run!</string>
     <string name="resume_run_button">Resume run!</string>
     <string name="stop_run_button">Stop run!</string>
+    <string name="back_to_main_menu_button">Main menu</string>
 </resources>
