@@ -31,8 +31,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -65,9 +73,22 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
     private RunState runState = RunState.NOT_STARTED;
     private HashMap<MetricsName, Long> metrics;
 
+    /**
+     * Database variables
+     */
+    public FirebaseDatabase database;
+    private DatabaseReference reference;
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        database = FirebaseDatabase.getInstance("https://stride-99148-default-rtdb.europe-west1.firebasedatabase.app");
+
 
         // Init metrics
         metrics = new HashMap<>();
@@ -192,6 +213,8 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
         });
 
         runState = RunState.ONGOING;
+
+        findViewById(R.id.stopRunButton).setEnabled(true);
     }
 
     /**
@@ -213,6 +236,31 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
      */
     private void stopRun() {
         runState = RunState.ENDED;
+        ((Button) findViewById(R.id.runStateButton)).setEnabled(false);
+
+        reference = database.getReference().child("Users").child(user.getUid());
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                User us = (User)dataSnapshot.getValue(User.class);
+                LocalDateTime test = LocalDateTime.now();
+                Run cur_run = new Run(test.toString());
+                cur_run.setCalories(metrics.get(MetricsName.CALORIES));
+                cur_run.setDistance(metrics.get(MetricsName.DISTANCE));
+                cur_run.setHeight(metrics.get(MetricsName.HEIGHT));
+                cur_run.setHundredthSecs(metrics.get(MetricsName.HUNDREDTH_SECS));
+                cur_run.setPace(metrics.get(MetricsName.PACE));
+                us.AddRun(cur_run);
+                reference.setValue(us);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                //Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        reference.addListenerForSingleValueEvent(postListener);
     }
 
     /**
@@ -318,6 +366,7 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
     /**
      * Updates the map's UI settings based on whether the user has granted location permission.
      */
+    @SuppressLint("MissingPermission")
     private void updateLocationUI() {
         if (mMap == null) {
             return;
