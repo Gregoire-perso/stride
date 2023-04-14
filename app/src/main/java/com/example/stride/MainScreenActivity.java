@@ -49,7 +49,7 @@ public class MainScreenActivity extends AppCompatActivity {
                         continue;
                     System.out.println(us.run);
                     ZoneId zoneId = ZoneId.systemDefault(); // or: ZoneId.of("Europe/Oslo");
-                    long course = LocalDateTime.parse(us.run.get(i)).atZone(zoneId).toEpochSecond();
+                    long course = LocalDateTime.parse(us.run.get(i).getDate()).atZone(zoneId).toEpochSecond();
                     long mtn = LocalDateTime.now().atZone(zoneId).toEpochSecond();
 
                     if (course > mtn)
