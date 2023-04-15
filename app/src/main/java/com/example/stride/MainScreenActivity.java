@@ -85,17 +85,16 @@ public class MainScreenActivity extends AppCompatActivity {
                         else {
                             tv9.setText(diff + " hours");
                         }
-                        System.out.println(tv9.getText());
 
 
                         if (i>0) {
                             pass = true;
                             Run before = us.run.get(i - 1);
 
-                            tv14.setText(before.distance / 1000 + " km");
+                            tv14.setText((float)before.distance / 1000 + " km");
                             tv16.setText(before.calories + " cal");
-                            tv15.setText(before.hundredthSecs / 1000/60 + " min");
-                            tv17.setText(before.pace + " min/km");
+                            tv15.setText(before.hundredthSecs / 100/60 + " min");
+                            tv17.setText((float)((before.hundredthSecs /100/60))/((before.distance / 1000)) + " min/km");
                             tv18.setText(before.height + " m");
                         }
 
