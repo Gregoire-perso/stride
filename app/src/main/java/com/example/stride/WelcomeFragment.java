@@ -1,5 +1,9 @@
 package com.example.stride;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,10 +11,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,10 +57,7 @@ public class WelcomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_welcome, container, false);
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle SavedInstanceState) {
-        super.onViewCreated(view, SavedInstanceState);
-
+    private void connectionButtons(View view) {
         Button SignInButton = view.findViewById(R.id.signInFragButton);
         SignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,5 +74,23 @@ public class WelcomeFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_registerFragment);
             }
         });
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle SavedInstanceState) {
+        super.onViewCreated(view, SavedInstanceState);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            connectionButtons(view);
+        }
+        else {
+            if (!((ConnectionActivity) getActivity()).getRememberMe())
+                connectionButtons(view);
+
+            else {
+                Intent i = new Intent((Activity) getContext(), TrackRunActivity.class);
+                startActivity(i);
+            }
+        }
     }
 }

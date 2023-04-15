@@ -3,6 +3,9 @@ package com.example.stride;
 import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -20,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -204,10 +208,14 @@ public class RegisterFragment extends Fragment {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "createUserWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
-                                        // TODO
                                         //updateUI(user);
-                                        createNewUser(user.getUid(),email);
+                                        createNewUser(user.getUid(), email);
 
+                                        ((ConnectionActivity) getActivity()).setRememberMe(
+                                                ((CheckBox) view.findViewById(R.id.registerRememberMeBox)).isChecked());
+
+                                        Intent i = new Intent((Activity) getContext(), TrackRunActivity.class);
+                                        startActivity(i);
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
