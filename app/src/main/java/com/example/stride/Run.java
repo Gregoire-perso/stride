@@ -1,8 +1,9 @@
 package com.example.stride;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
-public class Run {
+public class Run implements Comparable<Run> {
     public enum MetricsName {
         HUNDREDTH_SECS, // In hundredth of seconds
         DISTANCE, // In meters
@@ -71,5 +72,10 @@ public class Run {
 
     public Run(String date) {
         this.date = date;
+    }
+
+    @Override
+    public int compareTo(Run o) {
+        return LocalDateTime.parse(this.date).compareTo(LocalDateTime.parse(o.getDate()));
     }
 }

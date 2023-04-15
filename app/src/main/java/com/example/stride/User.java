@@ -3,6 +3,7 @@ package com.example.stride;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class User {
@@ -50,10 +51,12 @@ public class User {
     public void AddRun(String t)
     {
         run.add(new Run(t));
+        Collections.sort(run);
     }
 
     public void AddRun(Run run) {
         this.run.add(run);
+        Collections.sort(this.run);
     }
 }
 
