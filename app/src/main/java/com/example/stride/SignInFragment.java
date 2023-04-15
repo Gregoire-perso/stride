@@ -37,7 +37,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class SignInFragment extends Fragment {
 
     private FirebaseAuth mAuth;
-    private Context context;
 
     public SignInFragment() {
         // Required empty public constructor
@@ -61,8 +60,6 @@ public class SignInFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-
-        context = getActivity().getApplicationContext();
     }
 
     @Override
