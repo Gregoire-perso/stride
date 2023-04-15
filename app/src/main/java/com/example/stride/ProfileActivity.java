@@ -97,7 +97,6 @@ public class ProfileActivity extends AppCompatActivity {
         // Get the current user UID
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String Uid = currentUser.getUid();
-        //String Uid = "3cbL6t6DqDZtZJNBVR9cJC64Xaj1";
         DatabaseReference userRef = reference.child(Uid);
 
         // Display user name

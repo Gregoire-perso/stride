@@ -209,7 +209,7 @@ public class RegisterFragment extends Fragment {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "createUserWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
-                                        //updateUI(user);
+
                                         createNewUser(user.getUid(), email);
 
                                         ((ConnectionActivity) getActivity()).setRememberMe(

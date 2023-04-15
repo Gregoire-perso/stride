@@ -31,12 +31,17 @@ public class EditProfileActivity extends AppCompatActivity {
     private EditText uAge;
     private Spinner uGender;
     private EditText uEmail;
+
     private ImageButton editName;
     private ImageButton editEmail;
 
     private ImageButton editAge;
 
+    private Button editPswd;
+
     private TextView invalidAge;
+
+    private TextView linkSent;
 
     private ImageButton backBtn;
 
@@ -55,7 +60,6 @@ public class EditProfileActivity extends AppCompatActivity {
         // Get the current user UID
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String Uid = currentUser.getUid();
-        //String Uid = "3cbL6t6DqDZtZJNBVR9cJC64Xaj1";
         DatabaseReference userRef = reference.child(Uid);
 
         uName = findViewById(R.id.userName);
@@ -63,6 +67,7 @@ public class EditProfileActivity extends AppCompatActivity {
         uGender = findViewById(R.id.userGender);
         uEmail = findViewById(R.id.userEmail);
         invalidAge = findViewById(R.id.invalidAge);
+        linkSent = findViewById(R.id.linkSent);
         backBtn = findViewById(R.id.imageButton7);
 
         uName.setEnabled(false);
@@ -71,6 +76,7 @@ public class EditProfileActivity extends AppCompatActivity {
         uEmail.setEnabled(false);
         backBtn.setEnabled(true);
         invalidAge.setVisibility(View.INVISIBLE);
+        linkSent.setVisibility(View.INVISIBLE);
 
         // Display user name
         ValueEventListener nameListener = new ValueEventListener() {
@@ -155,9 +161,11 @@ public class EditProfileActivity extends AppCompatActivity {
         };
         userRef.addValueEventListener(emailListener);
 
+
         editName = findViewById(R.id.imageButton);
         editEmail = findViewById(R.id.imageButton4);
         editAge = findViewById(R.id.imageButton2);
+        editPswd = findViewById(R.id.userPassword);
 
         // Edit user name
         editName.setOnClickListener(new View.OnClickListener() {
@@ -183,6 +191,31 @@ public class EditProfileActivity extends AppCompatActivity {
                 enableDisableEditText(uEmail, editEmail);
             }
         });
+        // Edit user password
+        editPswd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                mAuth.sendPasswordResetEmail(uEmail.getText().toString());
+                linkSent.setVisibility(View.VISIBLE);
+                new CountDownTimer(2000, 100)
+                {
+
+                    @Override
+                    public void onTick(long arg0)
+                    {
+
+                    }
+
+                    @Override
+                    public void onFinish()
+                    {
+                        linkSent.setVisibility(View.VISIBLE);
+                    }
+                }.start();
+            }
+
+        });
 
 
         // Update the changes and link them to database
@@ -191,7 +224,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                linkDatabase(userRef, uName, uAge, uGender, uEmail);
+                linkDatabase(userRef, uName, uAge, uGender, uEmail, currentUser);
 
                 updateBtn.setBackgroundColor(Color.GRAY);
                 new CountDownTimer(2000, 100)
@@ -226,7 +259,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
-    public void linkDatabase(DatabaseReference userRef, EditText uName, EditText uAge, Spinner uGender, EditText uEmail)
+    public void linkDatabase(DatabaseReference userRef, EditText uName, EditText uAge, Spinner uGender, EditText uEmail, FirebaseUser currentUser)
     {
         //push user name
         if (!uName.getText().toString().equals(userRef.child("name")))
@@ -240,6 +273,12 @@ public class EditProfileActivity extends AppCompatActivity {
         }
         //push user age
         verifyAge(userRef, uAge);
+        //push user email
+        if (!uEmail.getText().toString().equals(userRef.child("email")))
+        {
+            userRef.child("email").setValue(uEmail.getText().toString());
+            currentUser.updateEmail(uEmail.getText().toString());
+        }
     }
 
     private void enableDisableEditText(EditText edText, ImageButton editBtn) {
