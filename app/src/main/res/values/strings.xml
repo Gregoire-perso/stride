@@ -16,4 +16,10 @@
         <item>Non-Binary</item>
         <item>Prefer not to say</item>
     </string-array>
+    <string name="editProfileError.Age">Enter a valid age (over 13 and under 120)!</string>
+    <string name="editProfileError.pfp">Could not upload your profile picture...</string>
+    <string name="editProfile.uploaded">Profile picture uploaded!</string>
+    <string name="editProfile.successful_update">Successfully updated!</string>
+    <string name="editProfile.problem_update">Something went wrong...</string>
+    <string name="editProfile.link_sent">Link sent!</string>
 </resources>

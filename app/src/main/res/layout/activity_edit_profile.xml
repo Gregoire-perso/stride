@@ -9,8 +9,11 @@
 
     <ImageButton
         android:id="@+id/ChangePpImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#00FFFFFF"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -180,21 +183,15 @@
 
         <TextView
             android:id="@+id/linkSent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="29dp"
-            android:layout_marginEnd="29dp"
-            android:layout_marginBottom="16dp"
-            android:text="Link sent !"
+            android:layout_width="112dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="32dp"
+            android:textAlignment="center"
             android:textColor="@color/valid"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/updateBtn"
-            app:layout_constraintTop_toBottomOf="@+id/userPassword"
-            app:layout_constraintVertical_bias="0.241" />
+            app:layout_constraintTop_toBottomOf="@+id/userPassword" />
 
         <Button
             android:id="@+id/updateBtn"
@@ -255,7 +252,8 @@
             android:layout_marginEnd="45dp"
             android:layout_marginBottom="33dp"
             android:gravity="center_vertical"
-            android:text="Enter a valid age (over 13 and under 120) !"
+            android:text="@string/editProfileError.Age"
+            android:textAlignment="center"
             android:textColor="@color/error"
             android:textSize="16sp"
             android:textStyle="bold"

@@ -9,12 +9,13 @@
 
     <TextView
         android:id="@+id/nameView"
-        android:layout_width="185dp"
-        android:layout_height="54dp"
+        android:layout_width="189dp"
+        android:layout_height="39dp"
         android:layout_marginTop="93dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="18dp"
         android:text="Name"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -24,8 +25,8 @@
 
     <Button
         android:id="@+id/editButton"
-        android:layout_width="189dp"
-        android:layout_height="52dp"
+        android:layout_width="191dp"
+        android:layout_height="68dp"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="28dp"
         android:backgroundTint="@color/stride"
@@ -36,11 +37,12 @@
 
     <TextView
         android:id="@+id/age"
-        android:layout_width="108dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="46dp"
+        android:layout_width="107dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="80dp"
         android:layout_marginBottom="8dp"
         android:text="Age:"
+        android:textAlignment="textEnd"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/stride"
         android:textStyle="bold"
@@ -48,25 +50,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/gender"
-        android:layout_width="108dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginBottom="8dp"
-        android:text="Gender:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/stride"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/racesNbr"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
         android:id="@+id/racesNbr"
         android:layout_width="108dp"
         android:layout_height="49dp"
-        android:layout_marginStart="46dp"
+        android:layout_marginStart="80dp"
         android:layout_marginBottom="8dp"
         android:text="Number of races:"
+        android:textAlignment="textEnd"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/stride"
         android:textStyle="bold"
@@ -78,20 +68,36 @@
         android:layout_width="108dp"
         android:layout_height="49dp"
         android:layout_marginStart="46dp"
-        android:layout_marginBottom="160dp"
+        android:layout_marginBottom="392dp"
         android:text="Kilometers traveled:"
+        android:textAlignment="textEnd"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/stride"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/racesNbr"
+        app:layout_constraintHorizontal_bias="0.97"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/gender"
+        android:layout_width="108dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginBottom="4dp"
+        android:text="Gender:"
+        android:textAlignment="textEnd"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/stride"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/racesNbr"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="146dp"
         android:layout_height="45dp"
-        android:layout_marginEnd="46dp"
+        android:layout_marginEnd="68dp"
         android:layout_marginBottom="8dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -104,7 +110,7 @@
         android:id="@+id/textView2"
         android:layout_width="146dp"
         android:layout_height="46dp"
-        android:layout_marginEnd="46dp"
+        android:layout_marginEnd="68dp"
         android:layout_marginBottom="8dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -117,7 +123,7 @@
         android:id="@+id/textView3"
         android:layout_width="146dp"
         android:layout_height="49dp"
-        android:layout_marginEnd="46dp"
+        android:layout_marginEnd="68dp"
         android:layout_marginBottom="8dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -130,8 +136,8 @@
         android:id="@+id/textView4"
         android:layout_width="146dp"
         android:layout_height="49dp"
-        android:layout_marginEnd="46dp"
-        android:layout_marginBottom="160dp"
+        android:layout_marginEnd="68dp"
+        android:layout_marginBottom="392dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/black"
@@ -140,11 +146,12 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
+        android:id="@+id/profileImage"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="88dp"
         app:layout_constraintEnd_toStartOf="@+id/nameView"
+        app:layout_constraintHorizontal_bias="0.616"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />

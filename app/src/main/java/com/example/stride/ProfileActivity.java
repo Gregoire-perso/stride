@@ -1,18 +1,9 @@
 package com.example.stride;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -26,6 +17,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -42,9 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private ImageButton changePfp;
     private ImageView pfp;
-
     private Button editBtn;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,30 +48,10 @@ public class ProfileActivity extends AppCompatActivity {
         uGender = findViewById(R.id.textView2);
         racesNbr = findViewById(R.id.textView3);
         kmNbr = findViewById(R.id.textView4);
-        changePfp = findViewById(R.id.changePfp);
-        pfp = findViewById(R.id.imageView);
+        pfp = findViewById(R.id.profileImage);
         editBtn = findViewById(R.id.editButton);
 
         // Display profile picture
-
-        // Change profile picture
-
-        ActivityResultLauncher<String> mGetContent = registerForActivityResult(
-                new ActivityResultContracts.GetContent(),
-                new ActivityResultCallback<Uri>()
-                {
-                    @Override
-                    public void onActivityResult(Uri result)
-                    {
-                        if (result != null)
-                        {
-                            pfp.setImageURI(result);
-                        }
-                    }
-                }
-        );
-
-        changePfp.setOnClickListener(v -> mGetContent.launch("image/*"));
 
         // Go to edit personal details view
         editBtn.setOnClickListener(new View.OnClickListener() {
@@ -110,16 +82,19 @@ public class ProfileActivity extends AppCompatActivity {
                 uName.setText(userData.getName());
 
                 // Display user age
-                uAge.setText(userData.getAge());
+                uAge.setText(Integer.toString(userData.getAge()));
 
                 // Display user gender
                 uGender.setText(userData.getGender());
 
                 // Display races number
-                racesNbr.setText(userData.getRacesNbr());
+                racesNbr.setText(Integer.toString(userData.computeNumberOfRace()));
 
                 // Display kms traveled
-                kmNbr.setText(Float.toString(userData.getTotalMeters() / 1000f));
+                kmNbr.setText(Float.toString(userData.computeRanMeters() / 1000f));
+                
+                // Display profile picture
+                Picasso.get().load(userData.getProfilePictureURI()).into(pfp);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
