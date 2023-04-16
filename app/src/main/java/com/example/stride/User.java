@@ -2,6 +2,7 @@ package com.example.stride;
 
 
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,20 +11,11 @@ import kotlin.UInt;
 public class User {
 
     protected String Uid;
-
+    protected String name;
     protected String birth;
-
-    public String name;
-
-    public String email;
-
-    public String gender;
-
-    public int age;
-
-    public int racesNbr;
-
-    public int kmNbr;
+    protected String email;
+    protected String gender;
+    protected int age;
 
     protected List<Run> run = new ArrayList<Run>();
 
@@ -44,8 +36,38 @@ public class User {
         return email;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
     public List<Run> getRun() {
         return run;
+    }
+
+    public int getRacesNbr() {
+        int cpt = 0;
+        for (Run r: run) {
+            if (LocalDateTime.parse(r.getDate()).compareTo(LocalDateTime.now()) < 0) {
+                cpt++;
+            }
+        }
+
+        return cpt;
+    }
+
+    public long getTotalMeters() {
+        long cpt = 0;
+        for (Run r: run) {
+            if (LocalDateTime.parse(r.getDate()).compareTo(LocalDateTime.now()) < 0) {
+                cpt += r.getDistance();
+            }
+        }
+
+        return cpt;
     }
 
     public User(){}
@@ -56,11 +78,8 @@ public class User {
         this.email = email;
         this.name = "Enter your name";
         this.birth = null;
-        //this.run = new ArrayList<Time>();
         this.gender = "Prefer not to say";
         this.age = 18;
-        this.racesNbr = 0;
-        this.kmNbr = 0;
     }
 
     public void AddRun(String t)

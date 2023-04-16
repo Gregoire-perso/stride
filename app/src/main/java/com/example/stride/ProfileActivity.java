@@ -99,97 +99,34 @@ public class ProfileActivity extends AppCompatActivity {
         String Uid = currentUser.getUid();
         DatabaseReference userRef = reference.child(Uid);
 
-        // Display user name
-
-        ValueEventListener nameListener = new ValueEventListener() {
+        // Get the user datas
+        ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                String userName = dataSnapshot.child("name").getValue(String.class);
-                uName.setText(userName);
-            }
+                User userData = (User)dataSnapshot.getValue(User.class);
 
+                // Display user name
+                uName.setText(userData.getName());
+
+                // Display user age
+                uAge.setText(userData.getAge());
+
+                // Display user gender
+                uGender.setText(userData.getGender());
+
+                // Display races number
+                racesNbr.setText(userData.getRacesNbr());
+
+                // Display kms traveled
+                kmNbr.setText(Float.toString(userData.getTotalMeters() / 1000f));
+            }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
-                Log.w("loadPost:onCancelled", databaseError.toException());
+                //Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
             }
         };
-        userRef.addValueEventListener(nameListener);
-
-        // Display user age
-
-        ValueEventListener ageListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                int userAge = dataSnapshot.child("age").getValue(Integer.class);
-                uAge.setText(Integer.toString(userAge));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        userRef.addValueEventListener(ageListener);
-
-        // Display user gender
-
-        ValueEventListener genderListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                String userGender = dataSnapshot.child("gender").getValue(String.class);
-                uGender.setText(userGender);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        userRef.addValueEventListener(genderListener);
-
-        // Display races number
-        ValueEventListener racesNbrListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                int userRacesNbr = dataSnapshot.child("racesNbr").getValue(Integer.class);
-                racesNbr.setText(Integer.toString(userRacesNbr));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        userRef.addValueEventListener(racesNbrListener);
-
-        // Display kms traveled
-
-        ValueEventListener kmNbrListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                int userKmNbr = dataSnapshot.child("kmNbr").getValue(Integer.class);
-                kmNbr.setText(Integer.toString(userKmNbr));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        userRef.addValueEventListener(kmNbrListener);
-
+        userRef.addListenerForSingleValueEvent(postListener);
     }
-
-
-
 }
