@@ -125,7 +125,11 @@ public class MainScreenActivity extends AppCompatActivity {
             startActivity(i);
         });
 
-
+        Button startRace = this.findViewById(R.id.button2);
+        startRace.setOnClickListener(v -> {
+            Intent i = new Intent(this, TrackRunActivity.class);
+            startActivity(i);
+        });
     }
 
 }

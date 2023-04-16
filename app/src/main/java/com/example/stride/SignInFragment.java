@@ -117,7 +117,7 @@ public class SignInFragment extends Fragment {
                                         ((ConnectionActivity) getActivity()).setRememberMe(
                                                 ((CheckBox) view.findViewById(R.id.signInRememberMeBox)).isChecked());
 
-                                        Intent i = new Intent((Activity) getContext(), TrackRunActivity.class);
+                                        Intent i = new Intent((Activity) getContext(), MainScreenActivity.class);
                                         startActivity(i);
                                         //updateUI(user);
                                     } else {

@@ -175,7 +175,8 @@ public class activity_race_prog extends AppCompatActivity {
                 };
                 reference.addListenerForSingleValueEvent(postListener);
 
-
+                Intent i = new Intent(this, MainScreenActivity.class);
+                startActivity(i);
             }
 
             else
@@ -217,7 +218,8 @@ public class activity_race_prog extends AppCompatActivity {
         Log.d("Date", "Year=" + year + " Month=" + (month + 1) + " day=" + dayOfMonth);
         this.editTextDate.setText(dayOfMonth +"-" + (month + 1) + "-" + year);
     }
-/*
+
+    /*
     public void showDate(int year, int month , int day)  {
         Toast.makeText(this, "Date: " + day+"-"+ (month+1) +"-"+ year+ newline +
                         "At: "+hour+":"+minute+pm_am+ newline +
@@ -256,9 +258,4 @@ public class activity_race_prog extends AppCompatActivity {
             }
         }
     }
-
-
-
-
-
 }
