@@ -1,16 +1,11 @@
 package com.example.stride;
 
-import static java.security.AccessController.getContext;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.Navigation;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -20,7 +15,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDateTime;
@@ -34,7 +28,7 @@ public class MainScreenActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private User us;
-    String newline =System.getProperty("line.separator");
+    //String newline =System.getProperty("line.separator");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +91,6 @@ public class MainScreenActivity extends AppCompatActivity {
                             tv17.setText((float)((before.hundredthSecs /100/60))/((before.distance / 1000)) + " min/km");
                             tv18.setText(before.height + " m");
                         }
-
-
                         break;
                     }
                 }
@@ -121,10 +113,16 @@ public class MainScreenActivity extends AppCompatActivity {
         };
         reference.addListenerForSingleValueEvent(postListener);
 
-        Button planrace = this.findViewById(R.id.button);
-        planrace.setOnClickListener(v -> {
+        Button planRace = this.findViewById(R.id.button);
+        planRace.setOnClickListener(v -> {
                 Intent i = new Intent(this, activity_race_prog.class);
                 startActivity(i);
+        });
+
+        Button prof = this.findViewById(R.id.button3);
+        prof.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProfileActivity.class);
+            startActivity(i);
         });
 
 
