@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -34,6 +36,7 @@ public class MainScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
+        ImageButton prof = findViewById(R.id.profileImageButton);
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -46,6 +49,10 @@ public class MainScreenActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 us = (User)dataSnapshot.getValue(User.class);
+
+                // Display retrieved profile picture
+                Picasso.get().load(us.getProfilePictureURI()).into(prof);
+
                 ZoneId zoneId = ZoneId.systemDefault(); // or: ZoneId.of("Europe/Oslo");
 
                 boolean pass = false;
@@ -119,7 +126,6 @@ public class MainScreenActivity extends AppCompatActivity {
                 startActivity(i);
         });
 
-        Button prof = this.findViewById(R.id.button3);
         prof.setOnClickListener(v -> {
             Intent i = new Intent(this, ProfileActivity.class);
             startActivity(i);

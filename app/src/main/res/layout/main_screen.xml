@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".MainScreenActivity">
 
+    <ImageButton
+        android:id="@+id/profileImageButton"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
@@ -31,18 +43,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
-        tools:ignore="MissingConstraints" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="61dp"
-        android:layout_height="66dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="52dp"
-        android:backgroundTint="#0A2463"
-        android:text="Profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <ImageView
