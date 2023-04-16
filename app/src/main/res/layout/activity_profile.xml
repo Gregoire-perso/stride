@@ -50,113 +50,111 @@
 
     <TextView
         android:id="@+id/age"
-        android:layout_width="107dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="308dp"
         android:text="Age:"
         android:textAlignment="textEnd"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/stride"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/gender"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/racesNbr"
-        android:layout_width="108dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="8dp"
         android:text="Number of races:"
         android:textAlignment="textEnd"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/stride"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/kms"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gender" />
 
     <TextView
         android:id="@+id/kms"
-        android:layout_width="108dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginBottom="392dp"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="8dp"
         android:text="Kilometers traveled:"
         android:textAlignment="textEnd"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/stride"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/racesNbr"
-        app:layout_constraintHorizontal_bias="0.97"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/racesNbr" />
 
     <TextView
         android:id="@+id/gender"
-        android:layout_width="108dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginBottom="4dp"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="8dp"
         android:text="Gender:"
         android:textAlignment="textEnd"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/stride"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/racesNbr"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/age" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="146dp"
-        android:layout_height="45dp"
-        android:layout_marginEnd="68dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="308dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/black"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/age"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="146dp"
-        android:layout_height="46dp"
-        android:layout_marginEnd="68dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/black"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/gender"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="146dp"
-        android:layout_height="49dp"
-        android:layout_marginEnd="68dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/black"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/racesNbr"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="146dp"
-        android:layout_height="49dp"
-        android:layout_marginEnd="68dp"
-        android:layout_marginBottom="392dp"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="28dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/black"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/kms"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <ImageView
         android:id="@+id/profileImage"
