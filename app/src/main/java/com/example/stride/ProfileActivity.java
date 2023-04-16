@@ -51,6 +51,10 @@ public class ProfileActivity extends AppCompatActivity {
         pfp = findViewById(R.id.profileImage);
         editBtn = findViewById(R.id.editButton);
 
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance("https://stride-99148-default-rtdb.europe-west1.firebasedatabase.app");;
+        reference = database.getReference().child("Users");
+
         ((ImageButton) findViewById(R.id.profileBackButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +63,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        // Display profile picture
+        ((Button) findViewById(R.id.logOutButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Intent i = new Intent(ProfileActivity.this, ConnectionActivity.class);
+                startActivity(i);
+            }
+        });
 
         // Go to edit personal details view
         editBtn.setOnClickListener(new View.OnClickListener() {
@@ -69,10 +80,6 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(ProfileActivity.this, EditProfileActivity.class));
             }
         });
-
-        mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance("https://stride-99148-default-rtdb.europe-west1.firebasedatabase.app");;
-        reference = database.getReference().child("Users");
 
         // Get the current user UID
         FirebaseUser currentUser = mAuth.getCurrentUser();
