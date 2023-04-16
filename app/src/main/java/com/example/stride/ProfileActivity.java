@@ -51,6 +51,14 @@ public class ProfileActivity extends AppCompatActivity {
         pfp = findViewById(R.id.profileImage);
         editBtn = findViewById(R.id.editButton);
 
+        ((ImageButton) findViewById(R.id.profileBackButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ProfileActivity.this, MainScreenActivity.class);
+                startActivity(i);
+            }
+        });
+
         // Display profile picture
 
         // Go to edit personal details view
