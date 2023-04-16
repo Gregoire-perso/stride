@@ -201,22 +201,24 @@ public class RegisterFragment extends Fragment {
                     registrationError.setVisibility(View.VISIBLE);
                 }
                 else {
-                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
+                    mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "createUserWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
-                                        //updateUI(user);
+
                                         createNewUser(user.getUid(), email);
 
                                         ((ConnectionActivity) getActivity()).setRememberMe(
                                                 ((CheckBox) view.findViewById(R.id.registerRememberMeBox)).isChecked());
 
-                                        Intent i = new Intent((Activity) getContext(), TrackRunActivity.class);
-                                        startActivity(i);
-                                    } else {
+                                        Intent completeDetails = new Intent(RegisterFragment.this.getActivity(), EditProfileActivity.class);
+                                        startActivity(completeDetails);
+                                    } 
+                                    else {
                                         // If sign in fails, display a message to the user.
                                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                         registrationError.setText(task.getException().getMessage());

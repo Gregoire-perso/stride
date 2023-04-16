@@ -5,21 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".EditProfileActivity" >
+    tools:context=".EditProfileActivity">
+
+    <ImageButton
+        android:id="@+id/ChangePpImageButton"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintVertical_bias="0.5"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="360dp"
-        android:layout_height="499dp"
-        android:layout_marginStart="50dp"
+        android:layout_width="361dp"
+        android:layout_height="539dp"
         android:layout_marginTop="194dp"
-        android:layout_marginEnd="51dp"
-        android:layout_marginBottom="42dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.673">
 
         <TextView
             android:id="@+id/textView8"
@@ -35,13 +47,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <EditText
             android:id="@+id/userName"
             android:layout_width="126dp"
             android:layout_height="48dp"
             android:layout_marginStart="19dp"
             android:layout_marginTop="79dp"
             android:gravity="center_vertical"
+            android:inputType="none"
             android:text="name"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -63,13 +76,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-        <TextView
+        <EditText
             android:id="@+id/userAge"
             android:layout_width="126dp"
             android:layout_height="48dp"
             android:layout_marginStart="19dp"
             android:layout_marginTop="27dp"
             android:gravity="center_vertical"
+            android:inputType="number"
             android:text="age"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -83,6 +97,7 @@
             android:layout_height="48dp"
             android:layout_marginStart="35dp"
             android:layout_marginTop="27dp"
+            android:entries="@array/genders"
             android:gravity="center_vertical"
             android:text="Gender"
             android:textColor="@color/stride"
@@ -91,14 +106,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
-        <TextView
+        <Spinner
             android:id="@+id/userGender"
             android:layout_width="126dp"
             android:layout_height="48dp"
             android:layout_marginStart="19dp"
             android:layout_marginTop="27dp"
+            android:entries="@array/genders"
             android:gravity="center_vertical"
-            android:text="gender"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="normal"
@@ -110,7 +125,7 @@
             android:layout_width="126dp"
             android:layout_height="48dp"
             android:layout_marginStart="35dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="20dp"
             android:gravity="center_vertical"
             android:text="Email"
             android:textColor="@color/stride"
@@ -119,26 +134,45 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
-        <TextView
+        <EditText
             android:id="@+id/userEmail"
             android:layout_width="126dp"
             android:layout_height="48dp"
             android:layout_marginStart="19dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="20dp"
             android:gravity="center_vertical"
+            android:inputType="none"
             android:text="email"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="12sp"
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/textView10"
             app:layout_constraintTop_toBottomOf="@+id/userGender" />
+
+        <Button
+            android:id="@+id/userPassword"
+            android:layout_width="174dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="6dp"
+            android:backgroundTint="@color/stride"
+            android:gravity="center_vertical"
+            android:text="Reset Password"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintStart_toEndOf="@+id/textView13"
+            app:layout_constraintTop_toBottomOf="@+id/userEmail" />
 
         <TextView
             android:id="@+id/textView13"
             android:layout_width="126dp"
             android:layout_height="48dp"
             android:layout_marginStart="35dp"
-            android:layout_marginTop="27dp"
+            android:layout_marginTop="24dp"
             android:gravity="center_vertical"
             android:text="Password"
             android:textColor="@color/stride"
@@ -148,92 +182,114 @@
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <TextView
-            android:id="@+id/userPassword"
-            android:layout_width="126dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="19dp"
-            android:layout_marginTop="27dp"
-            android:gravity="center_vertical"
-            android:text="password"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/textView13"
-            app:layout_constraintTop_toBottomOf="@+id/userEmail" />
+            android:id="@+id/linkSent"
+            android:layout_width="112dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="32dp"
+            android:textAlignment="center"
+            android:textColor="@color/valid"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/updateBtn"
+            app:layout_constraintTop_toBottomOf="@+id/userPassword" />
+
+        <Button
+            android:id="@+id/updateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="@color/stride"
+            android:text="Update"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView13"
+            app:layout_constraintVertical_bias="0.241" />
 
         <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginTop="79dp"
-            android:background="@color/stride"
+            android:background="@drawable/edit"
             android:contentDescription="edit user name"
             app:layout_constraintStart_toEndOf="@+id/userName"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/imageButton2"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginTop="27dp"
-            android:background="@color/stride"
+            android:background="@drawable/edit"
             android:contentDescription="edit user age"
             app:layout_constraintStart_toEndOf="@+id/userAge"
-            app:layout_constraintTop_toBottomOf="@+id/imageButton"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
-
-        <ImageButton
-            android:id="@+id/imageButton3"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="27dp"
-            android:background="@color/stride"
-            android:contentDescription="edit user gender"
-            app:layout_constraintStart_toEndOf="@+id/userGender"
-            app:layout_constraintTop_toBottomOf="@+id/imageButton2"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
+            app:layout_constraintTop_toBottomOf="@+id/imageButton" />
 
         <ImageButton
             android:id="@+id/imageButton4"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginTop="60dp"
-            android:background="@color/stride"
+            android:layout_marginTop="134dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/edit"
             android:contentDescription="edit user email"
-            app:layout_constraintStart_toEndOf="@+id/userPassword"
-            app:layout_constraintTop_toBottomOf="@+id/imageButton3"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
+            app:layout_constraintBottom_toTopOf="@+id/userPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintStart_toEndOf="@+id/userEmail"
+            app:layout_constraintTop_toBottomOf="@+id/imageButton2"
+            app:layout_constraintVertical_bias="0.906" />
 
-        <ImageButton
-            android:id="@+id/imageButton5"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="27dp"
-            android:background="@color/stride"
-            android:contentDescription="edit user password"
-            app:layout_constraintStart_toEndOf="@+id/userPassword"
-            app:layout_constraintTop_toBottomOf="@+id/imageButton4"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
+        <TextView
+            android:id="@+id/invalidAge"
+            android:layout_width="308dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="45dp"
+            android:layout_marginBottom="33dp"
+            android:gravity="center_vertical"
+            android:text="@string/editProfileError.Age"
+            android:textAlignment="center"
+            android:textColor="@color/error"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/textView8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="264dp"
-        android:layout_height="87dp"
-        android:layout_marginStart="73dp"
-        android:layout_marginTop="61dp"
-        android:layout_marginEnd="74dp"
-        android:layout_marginBottom="46dp"
+        android:layout_width="263dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="16dp"
         android:background="@color/stride"
         android:text="Edit personal details"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButton7"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton7"
+        style="@android:style/Widget.ImageButton"
+        android:src="?attr/actionModeCloseDrawable"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="#00FFFFFF"
+        android:contentDescription="button to go back to the profile view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

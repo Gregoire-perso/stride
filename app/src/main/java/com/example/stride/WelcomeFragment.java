@@ -88,7 +88,7 @@ public class WelcomeFragment extends Fragment {
                 connectionButtons(view);
 
             else {
-                Intent i = new Intent((Activity) getContext(), TrackRunActivity.class);
+                Intent i = new Intent((Activity) getContext(), EditProfileActivity.class);
                 startActivity(i);
             }
         }
