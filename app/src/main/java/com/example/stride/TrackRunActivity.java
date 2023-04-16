@@ -14,6 +14,7 @@ import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -137,6 +138,17 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
                 }
                 else
                     stopRun();
+            }
+        });
+
+        ImageButton backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopRun();
+                Intent i = new Intent(TrackRunActivity.this, MainScreenActivity.class);
+                startActivity(i);
             }
         });
     }

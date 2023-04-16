@@ -8,14 +8,29 @@
     android:layout_height="match_parent"
     tools:context=".TrackRunActivity">
 
+    <ImageButton
+        android:id="@+id/backButton"
+        style="@android:style/Widget.ImageButton"
+        android:layout_width="36dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:background="#00FFFFFF"
+        android:contentDescription="Back Button"
+        android:padding="15dp"
+        android:src="?attr/actionModeCloseDrawable"
+        android:visibility="visible"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/paceImage"
         android:layout_width="41dp"
         android:layout_height="42dp"
-        android:layout_marginTop="568dp"
-        android:layout_marginEnd="108dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="104dp"
         map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintTop_toTopOf="parent"
+        map:layout_constraintTop_toBottomOf="@+id/stopWatchImage"
         map:srcCompat="@drawable/timer_5019" />
 
     <TextView
@@ -26,7 +41,6 @@
         android:text="00'00&quot;00"
         android:textAlignment="center"
         map:layout_constraintEnd_toEndOf="@+id/paceImage"
-        map:layout_constraintHorizontal_bias="0.454"
         map:layout_constraintStart_toStartOf="@+id/paceImage"
         map:layout_constraintTop_toBottomOf="@+id/paceImage" />
 
@@ -45,22 +59,33 @@
         android:id="@+id/stopWatchImage"
         android:layout_width="41dp"
         android:layout_height="42dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="16dp"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintHorizontal_bias="0.5"
         map:layout_constraintStart_toEndOf="@+id/distanceImage"
         map:layout_constraintTop_toBottomOf="@+id/stopRunButton"
         map:srcCompat="@drawable/kisspng_stopwatch_timer_clip_art_stopwatch_cliparts_5a76b357e59d45_0215386115177285999405" />
 
+    <ImageView
+        android:id="@+id/distanceImage"
+        android:layout_width="41dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="16dp"
+        map:layout_constraintEnd_toStartOf="@+id/stopWatchImage"
+        map:layout_constraintHorizontal_bias="0.5"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toBottomOf="@+id/runStateButton"
+        map:srcCompat="@drawable/regle" />
+
     <TextView
         android:id="@+id/caloriesText"
         android:layout_width="7dp"
         android:layout_height="21dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="68dp"
         android:text="0"
         android:textAlignment="center"
         map:layout_constraintEnd_toEndOf="@+id/caloriesImage"
-        map:layout_constraintHorizontal_bias="0.439"
+        map:layout_constraintHorizontal_bias="0.41"
         map:layout_constraintStart_toStartOf="@+id/caloriesImage"
         map:layout_constraintTop_toBottomOf="@+id/distanceText" />
 
@@ -68,8 +93,9 @@
         android:id="@+id/heightImage"
         android:layout_width="52dp"
         android:layout_height="58dp"
-        android:layout_marginTop="288dp"
+        android:layout_marginTop="236dp"
         map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintHorizontal_bias="0.498"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toBottomOf="@+id/mapView"
         map:srcCompat="@drawable/montagnes" />
@@ -90,11 +116,11 @@
         android:id="@+id/caloriesImage"
         android:layout_width="73dp"
         android:layout_height="80dp"
-        android:layout_marginTop="548dp"
+        android:layout_marginTop="24dp"
         map:layout_constraintEnd_toStartOf="@+id/paceImage"
-        map:layout_constraintHorizontal_bias="0.513"
+        map:layout_constraintHorizontal_bias="0.527"
         map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toTopOf="parent"
+        map:layout_constraintTop_toBottomOf="@+id/distanceImage"
         map:srcCompat="@drawable/flamme_cal" />
 
     <TextView
@@ -108,45 +134,23 @@
         map:layout_constraintStart_toStartOf="@+id/distanceImage"
         map:layout_constraintTop_toBottomOf="@+id/distanceImage" />
 
-    <ImageView
-        android:id="@+id/distanceImage"
-        android:layout_width="41dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="40dp"
-        map:layout_constraintEnd_toStartOf="@+id/stopWatchImage"
-        map:layout_constraintHorizontal_bias="0.5"
-        map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toBottomOf="@+id/runStateButton"
-        map:srcCompat="@drawable/regle" />
-
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="349dp"
+        android:background="@color/stride"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintHorizontal_bias="0.533"
+        map:layout_constraintHorizontal_bias="1.0"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toTopOf="parent"
-        map:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/runStateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/start_run_button"
-        android:textSize="12sp"
-        map:layout_constraintBottom_toBottomOf="parent"
-        map:layout_constraintEnd_toStartOf="@+id/stopRunButton"
-        map:layout_constraintHorizontal_bias="0.5"
-        map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toBottomOf="@+id/mapView"
-        map:layout_constraintVertical_bias="0.085" />
+        map:layout_constraintVertical_bias="0.102" />
 
     <Button
         android:id="@+id/stopRunButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/button_state_color"
         android:enabled="false"
         android:text="@string/stop_run_button"
         android:textSize="12sp"
@@ -155,6 +159,20 @@
         map:layout_constraintHorizontal_bias="0.5"
         map:layout_constraintStart_toEndOf="@+id/runStateButton"
         map:layout_constraintTop_toBottomOf="@+id/mapView"
-        map:layout_constraintVertical_bias="0.085" />
+        map:layout_constraintVertical_bias="0.034" />
+
+    <Button
+        android:id="@+id/runStateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/button_state_color"
+        android:text="@string/start_run_button"
+        android:textSize="12sp"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toStartOf="@+id/stopRunButton"
+        map:layout_constraintHorizontal_bias="0.5"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toBottomOf="@+id/mapView"
+        map:layout_constraintVertical_bias="0.034" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
