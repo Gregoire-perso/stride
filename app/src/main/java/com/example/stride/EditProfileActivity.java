@@ -31,23 +31,19 @@ public class EditProfileActivity extends AppCompatActivity {
     private EditText uAge;
     private Spinner uGender;
     private EditText uEmail;
-
     private ImageButton editName;
     private ImageButton editEmail;
-
     private ImageButton editAge;
-
     private Button editPswd;
-
     private TextView invalidAge;
-
     private TextView linkSent;
-
     private ImageButton backBtn;
-
     public FirebaseDatabase database;
     private DatabaseReference reference;
     private FirebaseAuth mAuth;
+
+    private User userData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,89 +74,47 @@ public class EditProfileActivity extends AppCompatActivity {
         invalidAge.setVisibility(View.INVISIBLE);
         linkSent.setVisibility(View.INVISIBLE);
 
-        // Display user name
-        ValueEventListener nameListener = new ValueEventListener() {
+        ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                String userName = dataSnapshot.child("name").getValue(String.class);
-                uName.setText(userName);
-            }
+                userData = (User)dataSnapshot.getValue(User.class);
 
+                // Display user name
+                uName.setText(userData.getName());
+
+                // Display user age
+                uAge.setText(Integer.toString(userData.getAge()));
+
+                // Display user gender
+                switch (userData.getGender()) {
+                    case "Male":
+                        uGender.setSelection(0);
+                        break;
+
+                    case "Female":
+                        uGender.setSelection(1);
+                        break;
+
+                    case "Non-Binary":
+                        uGender.setSelection(2);
+                        break;
+
+                    default:
+                        uGender.setSelection(3);
+                        break;
+                }
+
+                // Display user email
+                uEmail.setText(userData.getEmail());
+            }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
-                Log.w("loadPost:onCancelled", databaseError.toException());
+                //Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
             }
         };
-        userRef.addValueEventListener(nameListener);
-
-        // Display user gender
-        ValueEventListener genderListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                String userGender = dataSnapshot.child("gender").getValue(String.class);
-                int pos;
-                if (userGender.equals("Male"))
-                    pos = 0;
-                else if (userGender.equals("Female"))
-                {
-                    pos = 1;
-                }
-                else if (userGender.equals("Non-Binary"))
-                {
-                    pos = 2;
-                }
-                else
-                {
-                    pos = 3;
-                }
-                uGender.setSelection(pos);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        userRef.addValueEventListener(genderListener);
-
-        // Display user age
-        ValueEventListener ageListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                int userAge = dataSnapshot.child("age").getValue(Integer.class);
-                uAge.setText(Integer.toString(userAge));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        userRef.addValueEventListener(ageListener);
-
-        // Display user email
-
-        ValueEventListener emailListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String userEmail = dataSnapshot.child("email").getValue(String.class);
-                uEmail.setText(userEmail);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        userRef.addValueEventListener(emailListener);
-
+        userRef.addListenerForSingleValueEvent(postListener);
 
         editName = findViewById(R.id.imageButton);
         editEmail = findViewById(R.id.imageButton4);
@@ -175,6 +129,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 enableDisableEditText(uName, editName);
             }
         });
+
         //Edit user age
         editAge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,6 +138,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 enableDisableEditText(uAge, editAge);
             }
         });
+
         // Edit user email
         editEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,6 +147,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 enableDisableEditText(uEmail, editEmail);
             }
         });
+
         // Edit user password
         editPswd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,7 +173,6 @@ public class EditProfileActivity extends AppCompatActivity {
             }
 
         });
-
 
         // Update the changes and link them to database
         Button updateBtn = findViewById(R.id.updateBtn);
@@ -248,7 +204,6 @@ public class EditProfileActivity extends AppCompatActivity {
         });
 
         // Go back to the profile view
-
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -256,7 +211,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(EditProfileActivity.this, ProfileActivity.class));
             }
         });
-
     }
 
     public void linkDatabase(DatabaseReference userRef, EditText uName, EditText uAge, Spinner uGender, EditText uEmail, FirebaseUser currentUser)
@@ -266,13 +220,16 @@ public class EditProfileActivity extends AppCompatActivity {
         {
             userRef.child("name").setValue(uName.getText().toString());
         }
+
         //push user gender
         if (!uGender.getSelectedItem().toString().equals(userRef.child("gender")))
         {
             userRef.child("gender").setValue(uGender.getSelectedItem().toString());
         }
+
         //push user age
         verifyAge(userRef, uAge);
+
         //push user email
         if (!uEmail.getText().toString().equals(userRef.child("email")))
         {
@@ -318,6 +275,4 @@ public class EditProfileActivity extends AppCompatActivity {
             userRef.child("age").setValue(ageNbr);
         }
     }
-
-
 }
