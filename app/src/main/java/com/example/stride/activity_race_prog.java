@@ -148,6 +148,14 @@ public class activity_race_prog extends AppCompatActivity {
             if(!title.getText().toString().isEmpty())
             {
                 AddCalendarEvent(year1, month1, day1, hour, hour2, minute);
+
+                //Come back to the main screen
+                Button button_date = this.findViewById(R.id.button_date);
+                button_date.setOnClickListener(view -> {
+                    Intent i = new Intent(this, MainScreenActivity.class);
+                    startActivity(i);
+                });
+
                 //add to firebase
                 reference = database.getReference().child("Users").child(user.getUid());
                 ValueEventListener postListener = new ValueEventListener() {
@@ -155,7 +163,7 @@ public class activity_race_prog extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get Post object and use the values to update the UI
                         us = (User)dataSnapshot.getValue(User.class);
-                        LocalDateTime test = LocalDateTime.of(year1, month1, day1, hour, minute);
+                        LocalDateTime test = LocalDateTime.of(year1, month1+1, day1, hour, minute);
                         us.AddRun(test.toString());
                         reference.setValue(us);
                     }
@@ -166,6 +174,8 @@ public class activity_race_prog extends AppCompatActivity {
                     }
                 };
                 reference.addListenerForSingleValueEvent(postListener);
+
+
             }
 
             else
