@@ -135,6 +135,7 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
                 if (runState == RunState.ENDED) {
                     Intent i = new Intent(TrackRunActivity.this, MainScreenActivity.class);
                     startActivity(i);
+                    finish();
                 }
                 else
                     stopRun();
@@ -149,6 +150,7 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
                 stopRun();
                 Intent i = new Intent(TrackRunActivity.this, MainScreenActivity.class);
                 startActivity(i);
+                finish();
             }
         });
     }

@@ -60,6 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(ProfileActivity.this, MainScreenActivity.class);
                 startActivity(i);
+                finish();
             }
         });
 
@@ -69,6 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
                 mAuth.signOut();
                 Intent i = new Intent(ProfileActivity.this, ConnectionActivity.class);
                 startActivity(i);
+                finish();
             }
         });
 
@@ -78,6 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 startActivity(new Intent(ProfileActivity.this, EditProfileActivity.class));
+                finish();
             }
         });
 

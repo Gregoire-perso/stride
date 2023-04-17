@@ -246,6 +246,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 startActivity(new Intent(EditProfileActivity.this, ProfileActivity.class));
+                finish();
             }
         });
     }

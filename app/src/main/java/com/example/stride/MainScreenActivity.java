@@ -62,7 +62,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 TextView tv17 = (TextView) findViewById(R.id.textView17);
                 TextView tv18 = (TextView) findViewById(R.id.textView18);
 
-                for (int i = 0 ; i< us.run.size() ; i++)
+                for (int i = 0 ; i < us.run.size() ; i++)
                 {
                     if (us.run.get(i) == null)
                         continue;
@@ -75,11 +75,11 @@ public class MainScreenActivity extends AppCompatActivity {
                         TextView tv9 = (TextView) findViewById(R.id.textView9);
                         long diff = (course - mtn)/60/60;
 
-                        if (diff>= 24 && diff <= 48)
+                        if (diff >= 24 && diff < 48)
                         {
                             tv9.setText(diff /24 + " day");
                         }
-                        else if (diff >48)
+                        else if (diff >= 48)
                         {
                             tv9.setText(diff /24 + " days");
                         }
@@ -88,14 +88,18 @@ public class MainScreenActivity extends AppCompatActivity {
                         }
 
 
-                        if (i>0) {
+                        if (i > 0) {
                             pass = true;
                             Run before = us.run.get(i - 1);
 
-                            tv14.setText((float)before.distance / 1000 + " km");
+                            tv14.setText(String.format("%.02f km", before.distance / 1000f));
                             tv16.setText(before.calories + " cal");
-                            tv15.setText(before.hundredthSecs / 100/60 + " min");
-                            tv17.setText((float)((before.hundredthSecs /100/60))/((before.distance / 1000)) + " min/km");
+                            tv15.setText(String.format("%02d:%02d:%02d", before.hundredthSecs / 100 / 60, before.hundredthSecs / 100 % 60, before.hundredthSecs % 100));
+                            if (before.distance != 0)
+                                tv17.setText(String.format("%d\'%02d\" min/km", before.pace / 100 / 60, before.pace / 100 % 60));
+                            else
+                                tv17.setText("- min/km");
+
                             tv18.setText(before.height + " m");
                         }
                         break;
@@ -104,11 +108,11 @@ public class MainScreenActivity extends AppCompatActivity {
 
                 if(us.run.size()==0 || !pass)
                 {
-                    tv14.setText("0 km");
-                    tv16.setText("0 cal");
-                    tv15.setText("0 min");
-                    tv17.setText("0 min/km");
-                    tv18.setText("0 m");
+                    tv14.setText("- km");
+                    tv16.setText("- cal");
+                    tv15.setText("-:-:-");
+                    tv17.setText("-\'-\" min/km");
+                    tv18.setText("- m");
                 }
 
             }
@@ -124,6 +128,7 @@ public class MainScreenActivity extends AppCompatActivity {
         planRace.setOnClickListener(v -> {
                 Intent i = new Intent(this, activity_race_prog.class);
                 startActivity(i);
+                finish();
         });
 
         prof.setOnClickListener(v -> {
@@ -135,6 +140,7 @@ public class MainScreenActivity extends AppCompatActivity {
         startRace.setOnClickListener(v -> {
             Intent i = new Intent(this, TrackRunActivity.class);
             startActivity(i);
+            finish();
         });
     }
 
