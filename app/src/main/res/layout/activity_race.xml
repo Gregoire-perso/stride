@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:queryHint="From..."
+        android:queryHint="Search..."
         android:iconifiedByDefault="false"
         android:elevation="5dp"
         android:background="@drawable/search_view"
@@ -28,32 +28,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <SearchView
-        android:id="@+id/mapSearch2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:queryHint="To..."
-        android:iconifiedByDefault="false"
-        android:elevation="5dp"
-        android:background="@drawable/search_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mapSearch" />
-
     <Button
-        android:id="@+id/btnDirection"
-        android:layout_width="149dp"
+        android:id="@+id/btnClear"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="700dp"
-        android:text="Get Direction"
-        app:layout_constraintBottom_toTopOf="@+id/maps"
-        app:layout_constraintEnd_toStartOf="@+id/maps"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_marginStart="16dp"
+        android:text="Clear"
+        app:layout_constraintBottom_toBottomOf="@id/maps"
+        app:layout_constraintStart_toStartOf="@+id/maps" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

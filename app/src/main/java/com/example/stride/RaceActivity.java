@@ -63,18 +63,13 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private Button btnDirection;
 
-    Marker mark = null;
-    Marker mark2 = null;
+    private Button btnClear;
+
+    private PolylineOptions poly = new PolylineOptions();
 
     Address origin = null;
-    Address dest = null;
 
     private SearchView fromSearchView;
-
-    private SearchView toSearchView;
-
-    Location currentlocation;
-    //FusedLocationProviderClient fusedLocationProviderClient;
 
 
     @Override
@@ -84,15 +79,9 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         fromSearchView = findViewById(R.id.mapSearch);
 
-        toSearchView = findViewById(R.id.mapSearch2);
-
-        btnDirection = findViewById(R.id.btnDirection);
+        btnClear = findViewById(R.id.btnClear);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.maps);
-
-        /*fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(RaceActivity.this);
-        getLastLocation();*/
-        //direction();
 
         fromSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -100,10 +89,6 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 String location = fromSearchView.getQuery().toString();
                 List<Address> addressList = null;
-
-                if(mark!=null){
-                    mark.remove();
-                }
 
                 if(location!=null){
                     Geocoder geocoder = new Geocoder(RaceActivity.this);
@@ -117,7 +102,10 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
                     if (addressList.size() != 0){
                         origin = addressList.get(0);
                         LatLng latLng = new LatLng(origin.getLatitude(), origin.getLongitude());
-                        mark = myMap.addMarker(new MarkerOptions().position(latLng).title(location));
+                        poly.color(Color.BLUE);
+                        poly.add(latLng);
+                        myMap.addPolyline(poly);
+                        myMap.addMarker(new MarkerOptions().position(latLng).title(location));
                         myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                     }
                     else {
@@ -134,7 +122,12 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        toSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        btnClear.setOnClickListener(view -> {
+            myMap.clear();
+            poly.getPoints().clear();
+        });
+
+        /*toSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
 
@@ -161,6 +154,7 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
                         myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                     }
                     else {
+                        myMap.clear();
                         Toast.makeText(RaceActivity.this, "Location not found", Toast.LENGTH_LONG).show();
                         toSearchView.setQuery("", false);
                     }
@@ -172,29 +166,31 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
             public boolean onQueryTextChange(String s) {
                 return false;
             }
-        });
+        });*/
 
-        btnDirection.setOnClickListener(view -> {
+        /*btnDirection.setOnClickListener(view -> {
                             getDirection(origin, dest);
-        });
+        });*/
 
         mapFragment.getMapAsync(RaceActivity.this);
     }
 
-    private void getDirection(Address from, Address to){
+    /*private void getDirection(Address from, Address to){
         if (from != null && to != null){
             LatLng a = new LatLng(from.getLatitude(), from.getLongitude());
             LatLng b = new LatLng(to.getLatitude(), to.getLongitude());
-            myMap.addPolyline(new PolylineOptions().add(a, b)
+            poly = new PolylineOptions();
+            myMap.addPolyline(poly.add(a,b)
                     .width(5)
                     .color(Color.BLUE)
                     .geodesic(true));
             myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(a, 10));
         }
         else{
+            myMap.clear();
             Toast.makeText(this, "Please select a start and a destination", Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
     /*private void getDirection(Address from, Address to){
         try{
@@ -248,22 +244,5 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
         myMap.getUiSettings().setCompassEnabled(true);
         myMap.getUiSettings().setZoomControlsEnabled(true);
         myMap.getUiSettings().setRotateGesturesEnabled(true);
-
-
-        /*LatLng loc = new LatLng(currentlocation.getLatitude(), currentlocation.getLongitude());
-        myMap.addMarker(new MarkerOptions().position(loc).title("Your position"));
-        myMap.moveCamera(CameraUpdateFactory.newLatLng(loc));*/
     }
-
-    /*@Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == FINE_PERMISSION_CODE){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                getLastLocation();
-            }else{
-                Toast.makeText(this, "Location permission is denied, please allow the permission", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }*/
 }
