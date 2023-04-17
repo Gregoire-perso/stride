@@ -59,9 +59,8 @@ public class MainScreenActivity extends AppCompatActivity {
 
         Button startRace = this.findViewById(R.id.button2);
         startRace.setOnClickListener(v -> {
-            Intent i = new Intent(this, TrackRunActivity.class);
+            Intent i = new Intent(this, RaceActivity.class);
             startActivity(i);
-            finish();
         });
     }
 

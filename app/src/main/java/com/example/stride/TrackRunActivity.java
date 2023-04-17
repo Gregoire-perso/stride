@@ -40,6 +40,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.maps.android.PolyUtil;
 
 
 import java.time.LocalDateTime;
@@ -67,6 +68,7 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
     private GoogleMap mMap;
     private MapView mapView;
     private Polyline myTrack;
+    private Polyline plannedTrack;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean locationPermissionGranted = false;
     private LocationManager locationManager;
@@ -74,6 +76,7 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
     private Location lastPosition = null;
     private RunState runState = RunState.NOT_STARTED;
     private HashMap<MetricsName, Long> metrics;
+    private String serializedPlanned = "";
 
     /**
      * Database variables
@@ -91,6 +94,9 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
         user = mAuth.getCurrentUser();
         database = FirebaseDatabase.getInstance("https://stride-99148-default-rtdb.europe-west1.firebasedatabase.app");
 
+        // Get the planned route
+        Intent i = getIntent();
+        serializedPlanned = i.getExtras().getString("Planned");
 
         // Init metrics
         metrics = new HashMap<>();
@@ -159,7 +165,7 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
      * This function is called at the beginning of the run
      */
     private void startRun() {
-        myTrack = mMap.addPolyline(new PolylineOptions().clickable(false));
+        myTrack = mMap.addPolyline(new PolylineOptions().clickable(false).color(Color.BLUE).zIndex(1));
         myTrack.setJointType(JointType.ROUND);
         myTrack.setColor(Color.BLUE);
         myTrack.setStartCap(new RoundCap());
@@ -379,6 +385,17 @@ public class TrackRunActivity extends AppCompatActivity implements OnMapReadyCal
 
         // Turn on the My Location layer and the related control on the map.
         updateLocationUI();
+
+        if (serializedPlanned != "") {
+            plannedTrack = mMap.addPolyline(new PolylineOptions().clickable(false)
+                    .color(getResources().getColor(R.color.stride))
+                    .zIndex(0));
+            for (LatLng l: PolyUtil.decode(serializedPlanned)) {
+                List<LatLng> prevPoints = plannedTrack.getPoints();
+                prevPoints.add(l);
+                plannedTrack.setPoints(prevPoints);
+            }
+        }
 
         // Get the current location of the device and set the position of the map.
         //getDeviceLocation();

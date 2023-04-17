@@ -22,4 +22,5 @@
     <string name="editProfile.successful_update">Successfully updated!</string>
     <string name="editProfile.problem_update">Something went wrong...</string>
     <string name="editProfile.link_sent">Link sent!</string>
+    <string name="title_activity_race">RaceActivity</string>
 </resources>
