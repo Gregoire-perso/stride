@@ -2,59 +2,43 @@ package com.example.stride;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
-import android.location.LocationProvider;
-import android.os.Looper;
+import android.os.StrictMode;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.maps.android.PolyUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class RaceActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -62,6 +46,7 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap myMap;
 
     private Button btnDirection;
+    private Polyline track;
 
     private Button btnClear;
 
@@ -168,29 +153,72 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });*/
 
-        /*btnDirection.setOnClickListener(view -> {
-                            getDirection(origin, dest);
-        });*/
+        btnDirection.setOnClickListener(view -> {
+            try {
+                getDirection(origin, dest);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         mapFragment.getMapAsync(RaceActivity.this);
     }
 
-    /*private void getDirection(Address from, Address to){
+    private void getDirection(Address from, Address to) throws IOException, JSONException {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         if (from != null && to != null){
             LatLng a = new LatLng(from.getLatitude(), from.getLongitude());
             LatLng b = new LatLng(to.getLatitude(), to.getLongitude());
-            poly = new PolylineOptions();
-            myMap.addPolyline(poly.add(a,b)
+            /*
+            myMap.addPolyline(new PolylineOptions().add(a, b)
                     .width(5)
                     .color(Color.BLUE)
                     .geodesic(true));
+             */
             myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(a, 10));
+            String formattedRequest = String.format(
+                    "https://maps.googleapis.com/maps/api/directions/json?origin=%s&destination=%s&waypoints=via:%s&key=%s",
+                    a.latitude + "," + a.longitude,
+                    b.latitude + "," + b.longitude,
+                    "",
+                    BuildConfig.MAPS_API_KEY);
+            OkHttpClient client = new OkHttpClient().newBuilder().build();
+            MediaType mediaType = MediaType.parse("text/plain");
+            RequestBody body = RequestBody.create(mediaType, "");
+            Request request = new Request.Builder()
+                    .url(formattedRequest)
+                    .post(body)
+                    .get()
+                    .build();
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String jsonResp = response.body().string();
+                Log.e("LOLILOL", formattedRequest);
+                Log.e("LOLILOL", jsonResp);
+                JSONObject resp = new JSONObject(jsonResp);
+                JSONArray routeObject = resp.getJSONArray("routes");
+                JSONObject routes = routeObject.getJSONObject(0);
+                JSONObject overviewPolylines = routes
+                        .getJSONObject("overview_polyline");
+                String encodedString = overviewPolylines.getString("points");
+                track = myMap.addPolyline(new PolylineOptions().clickable(false)
+                        .color(getResources().getColor(R.color.stride)));
+                for (LatLng l: PolyUtil.decode(encodedString)) {
+                    List<LatLng> prevPoints = track.getPoints();
+                    prevPoints.add(l);
+                    track.setPoints(prevPoints);
+                }
+            }
         }
         else{
             myMap.clear();
             Toast.makeText(this, "Please select a start and a destination", Toast.LENGTH_SHORT).show();
         }
-    }*/
+    }
+
 
     /*private void getDirection(Address from, Address to){
         try{
