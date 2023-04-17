@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -49,6 +50,7 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Polyline track;
 
     private Button btnClear;
+    private List<LatLng> points = new ArrayList<>();
 
     private PolylineOptions poly = new PolylineOptions();
 
@@ -87,11 +89,21 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
                     if (addressList.size() != 0){
                         origin = addressList.get(0);
                         LatLng latLng = new LatLng(origin.getLatitude(), origin.getLongitude());
-                        poly.color(Color.BLUE);
-                        poly.add(latLng);
-                        myMap.addPolyline(poly);
+                        points.add(latLng);
+                        //poly.color(Color.BLUE);
+                        //poly.add(latLng);
+                        //myMap.addPolyline(poly);
                         myMap.addMarker(new MarkerOptions().position(latLng).title(location));
                         myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                        if (points.size() > 1) {
+                            try {
+                                drawPolyline();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
                     }
                     else {
                         Toast.makeText(RaceActivity.this, "Location not found", Toast.LENGTH_LONG).show();
@@ -109,6 +121,7 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         btnClear.setOnClickListener(view -> {
             myMap.clear();
+            points.clear();
             poly.getPoints().clear();
         });
 
@@ -153,6 +166,7 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });*/
 
+        /*
         btnDirection.setOnClickListener(view -> {
             try {
                 getDirection(origin, dest);
@@ -163,27 +177,28 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+         */
+
         mapFragment.getMapAsync(RaceActivity.this);
     }
 
-    private void getDirection(Address from, Address to) throws IOException, JSONException {
+    private void drawPolyline() throws IOException, JSONException {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        if (from != null && to != null){
-            LatLng a = new LatLng(from.getLatitude(), from.getLongitude());
-            LatLng b = new LatLng(to.getLatitude(), to.getLongitude());
-            /*
-            myMap.addPolyline(new PolylineOptions().add(a, b)
-                    .width(5)
-                    .color(Color.BLUE)
-                    .geodesic(true));
-             */
-            myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(a, 10));
+        if (points.size() > 1) {
+            String intermediatePoints = "";
+            for (int i = 1; i < points.size() - 1; i++) {
+                intermediatePoints += "via:" + points.get(i).latitude + "," + points.get(i).longitude;
+                if (i != points.size() - 2) {
+                    intermediatePoints += "|";
+                }
+            }
+
             String formattedRequest = String.format(
-                    "https://maps.googleapis.com/maps/api/directions/json?origin=%s&destination=%s&waypoints=via:%s&key=%s",
-                    a.latitude + "," + a.longitude,
-                    b.latitude + "," + b.longitude,
-                    "",
+                    "https://maps.googleapis.com/maps/api/directions/json?origin=%s&destination=%s&waypoints=%s&key=%s",
+                    points.get(1).latitude + "," + points.get(1).longitude,
+                    points.get(points.size() - 1).latitude + "," + points.get(points.size() - 1).longitude,
+                    intermediatePoints,
                     BuildConfig.MAPS_API_KEY);
             OkHttpClient client = new OkHttpClient().newBuilder().build();
             MediaType mediaType = MediaType.parse("text/plain");
@@ -215,7 +230,7 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         else{
             myMap.clear();
-            Toast.makeText(this, "Please select a start and a destination", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please select at least two points", Toast.LENGTH_SHORT).show();
         }
     }
 
