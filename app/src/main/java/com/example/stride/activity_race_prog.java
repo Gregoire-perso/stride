@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -165,7 +166,13 @@ public class activity_race_prog extends AppCompatActivity {
                         us = (User)dataSnapshot.getValue(User.class);
                         LocalDateTime test = LocalDateTime.of(year1, month1+1, day1, hour, minute);
                         us.AddRun(test.toString());
-                        reference.setValue(us);
+                        reference.setValue(us).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Intent i = new Intent(activity_race_prog.this, MainScreenActivity.class);
+                                startActivity(i);
+                            }
+                        });
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -174,9 +181,6 @@ public class activity_race_prog extends AppCompatActivity {
                     }
                 };
                 reference.addListenerForSingleValueEvent(postListener);
-
-                Intent i = new Intent(this, MainScreenActivity.class);
-                startActivity(i);
             }
 
             else

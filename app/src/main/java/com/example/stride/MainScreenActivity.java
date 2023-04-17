@@ -30,19 +30,44 @@ public class MainScreenActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private User us;
+    ImageButton prof;
     //String newline =System.getProperty("line.separator");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
-        ImageButton prof = findViewById(R.id.profileImageButton);
+        prof = findViewById(R.id.profileImageButton);
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         database = FirebaseDatabase.getInstance("https://stride-99148-default-rtdb.europe-west1.firebasedatabase.app");
 
         reference = database.getReference().child("Users").child(user.getUid());
+
+        Button planRace = this.findViewById(R.id.button);
+        planRace.setOnClickListener(v -> {
+                Intent i = new Intent(this, activity_race_prog.class);
+                startActivity(i);
+                finish();
+        });
+
+        prof.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProfileActivity.class);
+            startActivity(i);
+        });
+
+        Button startRace = this.findViewById(R.id.button2);
+        startRace.setOnClickListener(v -> {
+            Intent i = new Intent(this, TrackRunActivity.class);
+            startActivity(i);
+            finish();
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         ValueEventListener postListener = new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -83,6 +108,9 @@ public class MainScreenActivity extends AppCompatActivity {
                         {
                             tv9.setText(diff /24 + " days");
                         }
+                        else if (diff <= 1) {
+                            tv9.setText(diff + " hour");
+                        }
                         else {
                             tv9.setText(diff + " hours");
                         }
@@ -110,7 +138,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 {
                     tv14.setText("- km");
                     tv16.setText("- cal");
-                    tv15.setText("-:-:-");
+                    tv15.setText("- : - : -");
                     tv17.setText("-\'-\" min/km");
                     tv18.setText("- m");
                 }
@@ -123,25 +151,5 @@ public class MainScreenActivity extends AppCompatActivity {
             }
         };
         reference.addListenerForSingleValueEvent(postListener);
-
-        Button planRace = this.findViewById(R.id.button);
-        planRace.setOnClickListener(v -> {
-                Intent i = new Intent(this, activity_race_prog.class);
-                startActivity(i);
-                finish();
-        });
-
-        prof.setOnClickListener(v -> {
-            Intent i = new Intent(this, ProfileActivity.class);
-            startActivity(i);
-        });
-
-        Button startRace = this.findViewById(R.id.button2);
-        startRace.setOnClickListener(v -> {
-            Intent i = new Intent(this, TrackRunActivity.class);
-            startActivity(i);
-            finish();
-        });
     }
-
 }
