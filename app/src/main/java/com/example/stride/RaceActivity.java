@@ -3,16 +3,27 @@ package com.example.stride;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.maps.CameraUpdate;
@@ -29,12 +40,20 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RaceActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -45,8 +64,14 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Button btnDirection;
 
     Marker mark = null;
+    Marker mark2 = null;
 
-    private SearchView mapSearchView;
+    Address origin = null;
+    Address dest = null;
+
+    private SearchView fromSearchView;
+
+    private SearchView toSearchView;
 
     Location currentlocation;
     //FusedLocationProviderClient fusedLocationProviderClient;
@@ -57,7 +82,9 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_race);
 
-        mapSearchView = findViewById(R.id.mapSearch);
+        fromSearchView = findViewById(R.id.mapSearch);
+
+        toSearchView = findViewById(R.id.mapSearch2);
 
         btnDirection = findViewById(R.id.btnDirection);
 
@@ -65,12 +92,13 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         /*fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(RaceActivity.this);
         getLastLocation();*/
+        //direction();
 
-        mapSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        fromSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
 
-                String location = mapSearchView.getQuery().toString();
+                String location = fromSearchView.getQuery().toString();
                 List<Address> addressList = null;
 
                 if(mark!=null){
@@ -87,18 +115,14 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
 
                     if (addressList.size() != 0){
-                        Address address = addressList.get(0);
-                        LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                        origin = addressList.get(0);
+                        LatLng latLng = new LatLng(origin.getLatitude(), origin.getLongitude());
                         mark = myMap.addMarker(new MarkerOptions().position(latLng).title(location));
                         myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-
-                        /*btnDirection.setOnClickListener(view -> {
-                            getDirection(userLoc, address);
-                        });*/
                     }
                     else {
                         Toast.makeText(RaceActivity.this, "Location not found", Toast.LENGTH_LONG).show();
-                        mapSearchView.setQuery("", false);
+                        fromSearchView.setQuery("", false);
                     }
                 }
                 return false;
@@ -110,15 +134,76 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+        toSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                String location = toSearchView.getQuery().toString();
+                List<Address> addressList = null;
+
+                if(mark2!=null){
+                    mark2.remove();
+                }
+
+                if(location!=null){
+                    Geocoder geocoder = new Geocoder(RaceActivity.this);
+
+                    try {
+                        addressList = geocoder.getFromLocationName(location, 1);
+                    } catch (IOException e){
+                        e.printStackTrace();
+                    }
+
+                    if (addressList.size() != 0){
+                        dest = addressList.get(0);
+                        LatLng latLng = new LatLng(dest.getLatitude(), dest.getLongitude());
+                        mark2 = myMap.addMarker(new MarkerOptions().position(latLng).title(location));
+                        myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                    }
+                    else {
+                        Toast.makeText(RaceActivity.this, "Location not found", Toast.LENGTH_LONG).show();
+                        toSearchView.setQuery("", false);
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
+        btnDirection.setOnClickListener(view -> {
+                            getDirection(origin, dest);
+        });
+
         mapFragment.getMapAsync(RaceActivity.this);
     }
 
-    private void getDirection(String from, String to){
+    private void getDirection(Address from, Address to){
+        if (from != null && to != null){
+            LatLng a = new LatLng(from.getLatitude(), from.getLongitude());
+            LatLng b = new LatLng(to.getLatitude(), to.getLongitude());
+            myMap.addPolyline(new PolylineOptions().add(a, b)
+                    .width(5)
+                    .color(Color.BLUE)
+                    .geodesic(true));
+            myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(a, 10));
+        }
+        else{
+            Toast.makeText(this, "Please select a start and a destination", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /*private void getDirection(Address from, Address to){
         try{
-            Uri uri = Uri.parse("https://www.google.com/maps/dir" + from + "/" + to);
+            Uri uri = Uri.parse("https://www.google.com/maps/dir/" + from.toString() + "/" + to.toString());
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             intent.setPackage("com.google.android.apps.maps");
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            LatLng a = new LatLng(from.getLatitude(), from.getLongitude());
+            myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(a,10));
             startActivity(intent);
         } catch (ActivityNotFoundException exception){
             Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.maps");
@@ -126,7 +211,7 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
-    }
+    }*/
 
     /*private void getLastLocation() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -156,9 +241,9 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(@NonNull GoogleMap googleMap) {
         myMap = googleMap;
 
-        LatLng limerick = new LatLng(52.673855, -8.574333);
+        /*LatLng limerick = new LatLng(52.673855, -8.574333);
         myMap.addMarker(new MarkerOptions().position(limerick).title("Limerick"));
-        myMap.moveCamera(CameraUpdateFactory.newLatLng(limerick));
+        myMap.moveCamera(CameraUpdateFactory.newLatLng(limerick));*/
 
         myMap.getUiSettings().setCompassEnabled(true);
         myMap.getUiSettings().setZoomControlsEnabled(true);
