@@ -32,10 +32,23 @@
         android:id="@+id/btnClear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="@color/stride"
         android:text="Clear"
         app:layout_constraintBottom_toBottomOf="@id/maps"
-        app:layout_constraintStart_toStartOf="@+id/maps" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/planToStartRunButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="@color/stride"
+        android:text="@string/start_run_button"
+        app:layout_constraintBottom_toBottomOf="@+id/maps"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.example.stride;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -16,6 +17,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -54,6 +56,7 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private PolylineOptions poly = new PolylineOptions();
 
+    private String serializedLastRoute = "";
     Address origin = null;
 
     private SearchView fromSearchView;
@@ -179,6 +182,16 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
 
          */
 
+        Button btnStartRun = findViewById(R.id.planToStartRunButton);
+        btnStartRun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(RaceActivity.this, TrackRunActivity.class);
+                i.putExtra("Planned", serializedLastRoute);
+                startActivity(i);
+            }
+        });
+
         mapFragment.getMapAsync(RaceActivity.this);
     }
 
@@ -218,10 +231,10 @@ public class RaceActivity extends AppCompatActivity implements OnMapReadyCallbac
                 JSONObject routes = routeObject.getJSONObject(0);
                 JSONObject overviewPolylines = routes
                         .getJSONObject("overview_polyline");
-                String encodedString = overviewPolylines.getString("points");
+                serializedLastRoute = overviewPolylines.getString("points");
                 track = myMap.addPolyline(new PolylineOptions().clickable(false)
                         .color(getResources().getColor(R.color.stride)));
-                for (LatLng l: PolyUtil.decode(encodedString)) {
+                for (LatLng l: PolyUtil.decode(serializedLastRoute)) {
                     List<LatLng> prevPoints = track.getPoints();
                     prevPoints.add(l);
                     track.setPoints(prevPoints);
